@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      table,tr,td {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 5%;
+        text-align: center;
+        font-size: xx-large;
+        border: 2px solid black;
+        border-collapse: collapse;
+        height: 7vh;
+      }
+      td {
+          width: 9%;
+        }
+        .top {
+            background-color: rgba(173, 216, 230, 0.822);
+        }
+        </style>
+        <!--  Sukuriame elementą <style>, kuriame pakoreguojame lenteles ilgi,ploti, šrifto dydi
+        ir išryškinam metus menėsi, ir savitės dienų pavadinimus su background-color -->
+  </head>
+  <body>
+    <p id="demo"></p>
+
+    <script>
+      let metai = 2023; // Apsibrėžiame pagrindinius kintamuosius - metai, menuo
+      let menuo = 10; 
+      menuo -= 1; // Atimamme 1 iš menuo, kadangi getMonth() metodas yra nuo 0 - 11
+      //ir kai atimsime 1, mėnesiai bus nuo 1 - 12, tokiu būdų bus paprasčiau skaityti ir rašyti kodą.
+      let date = new Date(metai, menuo); // Nusistatome datos kintamaji, kuriame bus, pradiniai kintamieji(metai ir menuo)
+
+      function kalendorius() { // Sukuriame pagrindine f-ja kalendorius
+        // kuria iškvietus gausime, kalendorių tų metu ir menesio, kuriuos nurodėme kintamuosiuose - metai ir menuo
+        let kalendorius = // Pasirašome pagrindį kalendoriaus kintamąjį, į kurį pildysime visą kalendoriaus struktūrą
+          '<table><td class=top style="" colspan="7"><b>' + // Pradedame kalendoriu pildyti su html table elementais
+          metai +
+          " " +
+          menesioPavadinimas() + // Paskiau įsivedame metus ir iškviečiame f-ja menesioPavadinimas(), kad gauti mėnesio pvd. lietuviškai
+          "</b></td></tr><tr>"; 
+        for (let element of savaitesDienos()) {
+          kalendorius += "<td class=top><b>" + element;
+        } // Kad gauti savaitės dienų pvd.-us išsikviečiame f-ja savaitėsDienos(), ir ja panaudojame cikle, kad išgauti f-jos kiekvieną elementą
+        let dienos = 0; // Pasirašome paprastą kintamajį dienos, kuris padės skaičiuoti dienu skaičių
+        kalendorius += "</b></tr><tr>";
+            // Pagrindiniai kalendoriaus strukturai bus naudojamos try f-jos:
+            // P-oji dienosPries(), kuri išves dienas prieš pirma menėsio diena(jei bus tokiu), kad užpildyti tarpą.
+            // A-oji dienuSkaicius(), kuri išves visas mėnesio dienas
+            // T-ioji dienosPo(), kuri išves dienas po A-osios f-jos(jei bus tokiu), kad užpildytu likusi tarpą
+        for (let element of dienosPries()) {
+          dienos += 1;
+          kalendorius += '<td style="color:gray">' + element + "</td>"; // Išryškinam dienasPrieš pakeisdami jų spalvą į pilka
+        }// Pasirašome for ciklą kad išgauti visus dienosPries() elementus(jei yra tokiu)
+        let date1 = new Date(metai, menuo);// Sukuriame du date kintamuosius,
+        let date2 = new Date(metai, menuo);// Su kuriais nustatysime veliau if sąlygoje
+        // Tai yra ar uždarysime galutini rezultatą su <tr> ir <table> ar tik su <tr>
+        let date2toliau = date2.setMonth(date2.getMonth() + 1);// Priskiriam tam tikras reikšmes date kintamiejiem
+        date2toliau += date2.setDate(date2.getDate() - 1);
+        for (let element of dienuSkaicius()) { // Šiame cikle išvesime visas menėsio dienas
+          dienos += 1;
+
+          if ((siandien() == true) & (element == new Date().getDate())) {
+            kalendorius += // Pasirašom if sąlyga , kurioje panaudosime f-ja siandien()
+            // Ir jei siandien() bus == true bus pritakyta šiandienos dienai foninė spalva
+              '<td style="background-color:rgb(184, 96, 96);"><b>' +
+              element +
+              "</b></td>";
+          } else {
+            kalendorius += "<td>" + element + "</td>";
+          }
+          if ((menuo == 1) & (dienos == 28) & (dienosPries() == 0)) {
+              kalendorius += "</tr></table>";
+              // Sukuriame if sąlygą, būtent Vasario mėnesiui, kad uždaryti <table>
+              // Nes Vasario mėnesis gali turėti 4 savaites iš viso, o kiti mėnesiai po 5 mažiausiai.
+        }
+          if (dienos == 35) { // Pasirašome if sąlyga, kad jei dienų skaičius bus lygus 35
+            // Lentele arba šoka į nauja eilute arba užsidaro visiškai
+            if (
+              ((date1.getDay() == 0) & (date2.getDate() >= 30)) |
+              ((date1.getDay() == 6) & (date2.getDate() == 31))
+            ) { // Pasirašome papildoma if sąlyga, kad jeigu mėnesio diena prasideda nuo Sekmadienio ir menėsis turi daugiau už 29 dienas
+                // Ir taip pat, jeigu prasideda nuo Šeštadienio ir turi 31 dieną
+                // tokiais atvejais bus uždaroma tik <tr> o ne <tr> ir <table>
+              kalendorius += "</tr>";
+            } else {
+              kalendorius += "</tr></table>";
+            }
+          }
+          // Pasirašome paprasta if sąlyga, kad kai dienos pasieks Sekmadieni, dienos peršoktų į naują eilute
+          if (dienos % 7 == 0) {
+            kalendorius += "</tr><tr>";
+          }
+        }
+        let p = 0; // Pasirašome papildomus kintamuosius, kuries padės nustatyti dienas po menėsio(jei yra tokiu) 
+        let isvisodienu = 0;
+        if (dienos <= 35) { // Pasirašome if else sąlyga, kuri nustatys isvisodienu skaičių  
+          if (dienos == 28) {
+            isvisodienu = 28; // Pasirašome if sąlyga, kuri bus nukreipta būtent Vasario mėnesiui
+          } else {
+            isvisodienu = 35;
+          }
+        } else {
+          isvisodienu = 42;
+        }
+        while (dienos != isvisodienu) { // Sukuriame while ciklą, kuris papildys lentele dienom, jei bus poreikis(t.y. atitiks sąlygą)
+          dienos += 1;
+          kalendorius += '<td style="color:gray">' + dienosPo()[p] + "</td>"; // Išryškinam dienas po pakeisdami jų spalvą į pilka
+          p += 1;
+        }
+        if (dienos == isvisodienu) { // If sąlygą parašom, kad uždarytumėm lentelę
+          kalendorius += "</tr></table>";
+        }
+        return kalendorius; // Gražinam visa sugeneruota kalendorių.
+      }
+      function menesioPavadinimas() {
+        const menesiai = ["Sausis","Vasaris","Kovas","Balandis","Gegužė","Birželis","Liepa","Rugpjūtis","Rugsėjis","Spalis","Lapkritis","Gruodis"];
+        return menesiai[menuo];
+      } // f-ja gražins mėnesio pavadinimą
+
+      function savaitesDienos() {
+        const weekdays = ["Pr", "A", "T", "K", "Pn", "Š", "S"];
+        return weekdays;
+      } // f-ja gražins savaitės dienų pavadinimą
+
+      function pirmaDiena() {
+        let pirmadiena = date.getDate();
+        return pirmadiena;
+      } // f-ja gražins pirma mėnesio diena
+        // Man kažkaip neprireikėjo šitos f-jos, galbūt dėl to, kad aš kitaip pasirašiau kodą
+      function dienosPries() {
+        let days = []; // Dienas priskiriame masyvui
+        if (date.getDay() == 0) {
+          date.setDate(date.getDate() - 6); // Jei bus sekmadienis atimsime 6 iš pirmos dienos
+        } else {
+          date.setDate(date.getDate() - date.getDay() + 1);
+          // Nustatom date atimdami iš menėsio pirmos dienos tos dienos savaitės diena
+        }
+        while (date.getDate() != 1) { // Pasirašome while ciklą, kuris išves visas dienas prieš pirmąją(jei bus tokiu)
+          days.push(date.getDate()); // Su days.push idėsime dienas į masyvą 
+          date.setDate(date.getDate() + 1);
+        }
+        return days;
+      } // f- ja gražins dienas(jei bus tokiu), kurios eis prieš pirmąją mėnesio dieną.
+      function dienuSkaicius() {
+        let days = [];
+        while (date.getMonth() === menuo) {
+          days.push(date.getDate());
+          date.setDate(date.getDate() + 1);
+        }
+        return days;
+      } // f-ja gržins  visas mėnesio dienas
+      function dienosPo() {
+        let days = [];
+        let dienos = 0; 
+        date.setDate(date.getDate() - date.getDay() + 1);
+        while (date.getDate() != 1) {
+          dienos += 1;
+          date.setDate(date.getDate() + 1);
+        }
+        while (date.getMonth() === menuo) {
+          date.setDate(date.getDate() + 1);
+          dienos += 1;
+        } // Nustatome date
+        while (dienos != 35) { // Sukuriam, ciklą, kuris sugeneruos dienas po pradinio mėnesio
+          dienos += 1;
+          days.push(date.getDate());
+          date.setDate(date.getDate() + 1);
+        }
+        return days;
+      } // f-ja gražins dienas po pradinio mėnesio
+      function siandien() {
+        let d = new Date();
+        if (d.getMonth() + d.getFullYear() == metai + menuo) {
+          return true;
+        } else {
+          return false;
+        }
+      } // f-ja gražins true jei duoti metai ir menuo sutaps su dabartiniais metais ir menėsiu
+      // jei nesutaps gražins false
+      document.getElementById("demo").innerHTML = kalendorius(); // Išvedam kalendoriu
+    </script>
+  </body>
+</html>
