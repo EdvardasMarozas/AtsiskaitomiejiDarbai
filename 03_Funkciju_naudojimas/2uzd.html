@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      span {
+        text-decoration: line-through;
+        font-size: large;
+      } /*Sukuriamas elementas <style>, kuris padaro Sena nuolaida nubraukta */
+      #demo {
+        width: 25%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      img {
+        width: 15em;
+        margin-left: 20%;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="demo"></p>
+    <img src="" alt="" />
+    <script>
+      const preke = {
+        Pavadinimas: "Projektorius Philips PicoPix",
+        Kaina: 615,
+        Paveiksliukas: "img/projektorius.jpg",
+        Kiekis: 1,
+        Aprasymas:
+          "Philips PicoPix yra labai naudinga ir issamu preke. Projektorius turi Full HD 1080p raišką, kas užtikrina aukštos kokybės vaizdą.",
+        Nuolaida: 18.9,
+      }; // Turime objekta su raktais ir jų reikšmėm
+      let text = pilnaPreke() + "<br>";
+      text += "<br>" + nepilnaPreke();
+      // Formuojame išvedimą, kuriame yra 2 funkcijos
+      // 1 f-ja išves visa prekės info.
+      // 2 f-ja išves Sutrumpinta prekės informaciją prekių sąrašui(katalogui)
+
+      function pilnaPreke(
+        Pavadinimas,
+        Kaina,
+        Paveiksliukas,
+        Kiekis,
+        Aprasymas,
+        Nuolaida
+      ) {
+        if (!preke.Kiekis) {
+          preke.Kiekis = "Prekė Išparduota";
+        } // If sąlyga patikrint ar yra prekė sandėlyje, jei nėra išves Prekė išparduota
+        // jei yra pridedu žodi vnt.
+        else {
+          preke.Kiekis += " vnt";
+        }
+        if (!preke.Nuolaida) {
+          return `<strong>Pavadinimas:</strong> ${preke.Pavadinimas} <br>
+        <strong>Kaina:</strong><b> ${preke.Kaina}
+        &euro;</b> <br>
+        <img src = "${preke.Paveiksliukas}"> <br>
+        <strong>Kiekis:</strong> ${preke.Kiekis} <br>
+        <strong>Aprašymas:</strong> ${preke.Aprasymas} <br>
+        Nėra nuolaidos <br> 
+        <hr>
+        `; // if sąlyga skirta kitokiam išvedimui, kai nėra nuolaidos, ar nenurodyta nuolaidą
+          // Jei nėra nuolaidos išves pirma sąlyga, kitokiu atveju - else išves antra sąlyga kai nuolaida yra
+        } else {
+          return `<strong>Pavadinimas:</strong> ${preke.Pavadinimas} <br>
+          <strong>Kaina:</strong> <b style=font-size:x-large;> ${
+            preke.Kaina - ((preke.Kaina * preke.Nuolaida) / 100).toFixed()
+          }
+        &euro;</b> <span>${preke.Kaina}&euro; </span><br>
+        <img src = "${preke.Paveiksliukas}"> <br>
+        <strong>Kiekis:</strong>  ${preke.Kiekis}  <br>
+        <strong>Aprašymas:</strong> ${preke.Aprasymas} <br>
+        <strong>Nuolaida:</strong> ${preke.Nuolaida} % <br>
+        <hr>
+        `;
+        } // Taip pat, kad gauti nuokainuota kainą, reikia Orignalia kaina atimti iš Nuolaidos,
+        // o nuolaidą gaunam ją padalinus iš 100 ir sudauginus su originaliu skaičiumi
+      } // Pirma funkcija išveda visa prekes informacija,
+      function nepilnaPreke(Pavadinimas, Paveiksliukas, Kaina, Nuolaida) {
+        if (!preke.Nuolaida) {
+          return `<img src = "${preke.Paveiksliukas}"> <br>
+        ${preke.Pavadinimas} <br>
+        <b style=font-size:xx-large;>${preke.Kaina} &euro;</b>
+        `;
+        } // if sąlyga parašome tam, kad jei nuolaidos nebūtų, išves tik tai Kaina
+        // jei yra nuolaidą vis dėl to, tam yra else, kuris išves su nuolaida
+        else {
+          return `<img src = "${preke.Paveiksliukas}"> <br>
+        ${preke.Pavadinimas} <br>
+        <b style=font-size:xx-large;>${
+          preke.Kaina - ((preke.Kaina * preke.Nuolaida) / 100).toFixed()
+        } &euro;</b> <span>${preke.Kaina}&euro; </span>
+        `;
+        }
+      } // Antra f-ja išveda sutrumpinta prekės info. katalogui
+      document.getElementById("demo").innerHTML = text;
+    </script>
+  </body>
+</html>

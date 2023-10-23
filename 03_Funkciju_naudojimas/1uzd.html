@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #demo {
+        font-size: xx-large;
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+          sans-serif;
+        position: absolute;
+        top: 20%;
+        left: 40%;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="demo"></p>
+    <script>
+      let miles = 5;
+      let km = 8;
+      let time = 3;
+      let speed = 30;
+      let kelvin = 300;
+      let current_strenght = 5;
+      let electrical_voltage = 10;
+      let electrical_ressistance = 7;
+      let text = "Conversion: <br>";
+
+      text += `${miles} miles = ${toKilometers(miles)} <br>`;
+      text += `${km} kilometers = ${toMiles(km)} <br>`;
+      text += `${time} hours X ${speed} km/h = ${toDistance(time, speed)} <br>`;
+      text += `${kelvin} Kelvin = ${toCelcius(kelvin)} <br>`;
+      text += `${current_strenght} A X ${electrical_voltage} V = ${toCurrent_Power(
+        current_strenght,
+        electrical_voltage
+      )} <br>`;
+      text += `${electrical_voltage} V / ${electrical_ressistance} R = ${toElectric_Current(
+        electrical_voltage,
+        electrical_ressistance
+      )}`;
+      //Konvertavimo teksto formavimas
+
+      function toKilometers(miles) {
+        return miles * (1.609344).toFixed(3) + " km";
+      } // Mylių konverativimas į kilometrus
+      function toMiles(km) {
+        return km * (0.62137119).toFixed(3) + " miles";
+      } // Kilometrų konvertavimas į myles
+      function toDistance(time, speed) {
+        return speed * time + " km";
+      } // Atsumo formulė, kai turime greitį ir laiką
+      function toCelcius(kelvin) {
+        return (kelvin - 273.15).toFixed(2) + "<sup>o</sup>C";
+      } // Kelvinų konvertavimas į Celcius
+      function toCurrent_Power(current_strenght, electrical_voltage) {
+        return current_strenght * electrical_voltage + " Watt";
+      } // Srovės galios formulė, kai turime strovės stiprį ir įtampą
+      // Srovės galia matuojama - Vatais(Watt), srovės stipris - Amperais ir įtampa Voltais
+      function toElectric_Current(electrical_voltage, electrical_ressistance) {
+        return (
+          (electrical_voltage / electrical_ressistance).toFixed(2) + " Ampere"
+        );
+      } // Srovės stiprio formulė, kai turime įtampą ir varža
+      // Varža matuojama Omais(R)
+      // to.Fixed() sumažina skaičiu iki tam tikro pasirinkto ilgio
+      document.getElementById("demo").innerHTML = text;
+    </script>
+    <script></script>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #kaina {
+        text-decoration: line-through;
+      }
+      img {
+        width: 15em;
+      }
+      #demo {
+        text-align: center;
+        width: 30%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      b {
+        margin-left: 2%;
+      } /*Su <style> elemntu pakoreguojam pati tekstą*/
+    </style>
+  </head>
+  <body>
+    <p id="demo"></p>
+    <script>
+      const preke = [
+        {
+          Pavadinimas: "Projektorius Philips PicoPix",
+          Kaina: 615,
+          Paveiksliukas: "img/projektorius.jpg",
+          Kiekis: 1,
+          Aprasymas:
+            "Philips PicoPix yra labai naudinga ir issamu preke. Projektorius turi Full HD 1080p raišką, kas užtikrina aukštos kokybės vaizdą.",
+          Nuolaida: 18.9,
+        },
+        {
+          Pavadinimas: "Philips NeoPix 720 Namų projektorius",
+          Kaina: 489,
+          Paveiksliukas: "img/philips_projektorius.jpg",
+          Kiekis: 5,
+          Aprasymas:
+            "Philips NeoPix 720 Namų projektorius NPX720/INT yra puikus pasirinkimas norintiems mėgautis kokybišku vaizdu namuose arba renginiuose",
+          Nuolaida: 2,
+        },
+        {
+          Pavadinimas: "Philips PicoPix Micro 2 Mini Projektorius",
+          Kaina: 345,
+          Paveiksliukas: "img/philips_projektorius2.jpg",
+          Kiekis: 5,
+          Aprasymas:
+            "Philips PicoPix Micro 2 Mini Projektorius PPX340/INT yra labai patogus ir kompaktiškas projektorius su stereo garsiakalbiais ir akumuliatoriumi.",
+          Nuolaida: 4,
+        },
+        {
+          Pavadinimas: "Philips NeoPix Ultra 2TV+ Namų Projektorius",
+          Kaina: 499,
+          Paveiksliukas: "img/philips_projektorius3.jpg",
+          Kiekis: 1,
+          Aprasymas:
+            "Philips NeoPix Ultra 2TV+ Namų Projektorius NPX644 yra puiki prekė, kuri turi daug privalumų.Tačiau yra vienas trūkumas - projektorius yra gana didelis ir sunkus.",
+          Nuolaida: 3,
+        },
+        {
+          Pavadinimas: "Philips Mobile Projektorius GoPix 1",
+          Kaina: 335,
+          Paveiksliukas: "img/philips_projektorius4.jpg",
+          Kiekis: 5,
+          Aprasymas:
+            "Philips Mobile Projektorius GoPix 1 FWVGA (854x480), Juodas yra labai patogus ir kokybiškas projektorius.",
+          Nuolaida: 9,
+        },
+      ]; // Turime prekių sąrašą(objektus) masyve(array)
+      let isvedimas = prekiuSarasas();
+
+      function prekiuSarasas(Pavadinimas, Kaina, Paveiksliukas, Nuolaida) {
+        let prekiukatalogas = ""; // Sukuriame kintamąjį, kuriam duosim visa prekių sarąšą
+        for (const x in preke) {
+          prekiukatalogas += `<img src  = "${preke[x].Paveiksliukas}"> <br> 
+        ${preke[x].Pavadinimas} <br> `;
+          if (!preke[x].Nuolaida) {
+            prekiukatalogas += `<b style=font-size:xx-large;> ${preke[x].Kaina} &euro;</b> <br> `;
+            if (x < preke.length - 1) {
+              prekiukatalogas += "<hr>";
+            }
+          } // if sąlygą parašom tam, kad būtų išvedimas atsižvelgiantis į tai, kad gali nebūti nuolaidos
+          // Jei nėra nuolaidos išves tik prekės Kaina be nuolaidos.
+          else {
+            prekiukatalogas += `<b style=font-size:xx-large;>
+            ${
+              preke[x].Kaina -
+              ((preke[x].Kaina * preke[x].Nuolaida) / 100).toFixed()
+            }
+            &euro;</b> <span id=kaina>${preke[x].Kaina}&euro; </span> <br> `;
+            if (x < preke.length - 1) {
+              prekiukatalogas += "<hr>";
+            }
+          }
+        }
+        return prekiukatalogas;
+      } // Parašyta f-ja yra tokia pati kaip 2 užduotyje, tik šiuo atveju turime daugiau prekiu(objektų)
+      // Taigi kuriam ciklą loop for (const x in preke)
+      // Ciklas sugeneruos visų prekių sutrumpinta sąrašą.
+      // Ir visą tą sutrumpintą sąrašą gausime paraše statement return ir po jo tam tikra f-jos reikšmę
+      // Šiuo atveju kintamasis prekiukatalogas išves visą prekių sąrašą(katalogą)
+      document.getElementById("demo").innerHTML = isvedimas;
+    </script>
+  </body>
+</html>
