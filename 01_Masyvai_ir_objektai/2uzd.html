@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p id="demo"></p>
+    <script>
+      const kontakto_informacija = [ // <- turime masyva su daug elementu nuo 0 iki 6
+        "Vardenis",
+        "Pavardėnis",
+        "stasys.stasiunas@gmail.com",
+        "+370609577323",
+        "Daukaunto g.5-10",
+        "96511",
+        "moka parduoti tušinuka",
+      ]; 
+      let text = "kontakto info:" + "<br>" + "<ul>"; // <- sudarome saraša
+      text += "<li>" + kontakto_informacija[0] + "</li>" + "<br>"; // <-papildome saraša su masyvo elementais
+      text += "<li>" + kontakto_informacija[1] + "</li>" + "<br>";
+      text += "<li>" + kontakto_informacija[2] + "</li>" + "<br>";
+      text += "<li>" + kontakto_informacija[3] + "</li>" + "<br>";
+      text += "<li>" + kontakto_informacija[4] + "</li>" + "<br>";
+      text += "<li>" + kontakto_informacija[5] + "</li>" + "<br>";
+      text += "<li>" + kontakto_informacija[6] + "</li>" + "<br>";
+      text += "</ul>";
+      document.getElementById("demo").innerHTML = text; // išvedame teksta
+    </script>
+  </body>
+</html>

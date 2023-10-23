@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p id="demo"></p>
+    <script>
+      const car = ["BMW", "x5", 2009, "dyzelis"]; // <-masyvas
+      // iš masyvo paiimame elementus nuo 0 iki 3
+      let apr1 = "marke - " + car[0]; // <- item/element
+      let apr2 = "tipas - " + car[1];
+      let apr3 = "metai - " + car[2];
+      let apr4 = "kuro tipas - " + car[3];
+      let text = "Mašina :" + "<br>";
+      text += apr1 + "<br>"; //<-padarom saraša su kintamaisiais
+      text += apr2 + "<br>";
+      text += apr3 + "<br>";
+      text += apr4 + "<br>";
+
+      document.getElementById("demo").innerHTML = text; //<-išvedame teksta
+    </script>
+  </body>
+</html>

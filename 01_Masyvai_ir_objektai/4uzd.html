@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p id="demo"></p>
+    <script>
+      const preke = { // <- turime vel objekta su keleta kintamūjų
+        Pavadinimas: "Indukcinė kaitlentė",
+        Kaina: 269,
+        Trmp_aprs: "Prekės atspalvis gali skirtis nuo matomos nuotraukoje",
+        fotos: [ // <- cia turime masyva kuris yra objekte su keliais elementais 
+          '<img src="kaitlente.jpg" + style="width:200px">',
+          '<img src="kaitlente2.jpg">',
+          '<img src="kaitlente3.jpg">', // nuotraukom ir nuorodom naudoti dvigubas ir viengubas kabutes arba dvigubas kabutes ir backslash - \(kuris dedamas pries kabutes)
+        ],
+        Nuoroda:
+          '<a href ="https://www.senukai.lt/p/indukcine-kaitlente-beko-hii64401mt/eviw?cat=xkf&index=3">nuoroda</a>',
+      };
+      let text = "Prekės info:" + "<br>" + "<ul>"; // <- sudarome saraša su kintamuoju text
+      if (preke.Pavadinimas == false) {             // <- Patikrinam ar informacija pateikta gerai
+        preke.Pavadinimas = "nėra pavadinimo";      // <- Jei nera pateikta iššoks laukelis su žodžiu nėra
+      }
+      if (preke.Kaina == false) {
+        preke.Kaina = "nėra kainos";
+      }
+      if (preke.Trmp_aprs == false) {
+        preke.Trmp_aprs = "nėra aprašymo";
+      }
+      if (preke.fotos == false) {
+        preke.fotos = "nėra foto";
+      }
+      if (preke.Nuoroda == false) {
+        preke.Nuoroda = "nėra nuorodos";
+      }
+      text += "<li>" + preke.Pavadinimas + "</li>" + "<br>";   // <- padarome saraša su objekto kintamaisiai elementais
+      text += "<li>" + preke.Kaina + " €" + "</li>" + "<br>";
+      text += "<li>" + preke.Trmp_aprs + "</li>" + "<br>";
+      text += "<li>" + preke.fotos.join("") + "</li>" + "<br>"; //<- Kadangi "fotos" elementas yra masyvas ir turi savo try elementus.
+      text += "<li>" + preke.Nuoroda + "</li>" + "<br>";// Tie elementai įprastai(default) yra sujungiami kableliais, ir kad pašalint tuos kablelius naudojama .join("")
+      text += "</ul>";
+      document.getElementById("demo").innerHTML = text; // <- Išvedame saraša
+    </script>
+  </body>
+</html>

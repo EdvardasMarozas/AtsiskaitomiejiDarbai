@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p id="demo"></p>
+    <script>
+      const kontakto_informacija = { // Šiuo atveju turime objekta su kintamaisiais
+        Vardas: "Vardenis",
+        Pavarde: "Pavardėnis",
+        el_pastas: "stasys.stasiunas@gmail.com",
+        telefonas: "+370609577323",
+        adresas: "Daukaunto g.5-10",
+        pasto_kodas: "",
+        aprasymas: "moka parduoti tušinuka",
+      };
+      let text = "kontakto info:" + "<br>" + "<ul>"; // <- sudarome saraša su kintamuoju text
+      if (kontakto_informacija.Vardas == false) {    // <- Patikrinam ar informacija pateikta
+        kontakto_informacija.Vardas = "nėra vardo";  // <- Jei nera pateikta iššoks laukelis su žodžiu nėra
+      }
+      if (kontakto_informacija.Pavarde == false) {
+        kontakto_informacija.Pavarde = "nėra pavardės";
+      }
+      if (kontakto_informacija.el_pastas == false) {
+        kontakto_informacija.el_pastas = "nėra pašto";
+      }
+      if (kontakto_informacija.telefonas == false) {
+        kontakto_informacija.telefonas = "nėra telefono";
+      }
+      if (kontakto_informacija.adresas == false) {
+        kontakto_informacija.adresas = "nėra adreso";
+      }
+      if (kontakto_informacija.pasto_kodas == false) {
+        kontakto_informacija.pasto_kodas = "nėra pašto kodo";
+      }
+      if (kontakto_informacija.aprasymas == false) {
+        kontakto_informacija.aprasymas = "nėra aprašymo";
+      }
+      text += "<li>" + kontakto_informacija.Vardas + "</li>" + "<br>"; // <- padarome saraša su objekto kintamaisiai elementais
+      text += "<li>" + kontakto_informacija.Pavarde + "</li>" + "<br>";
+      text += "<li>" + kontakto_informacija.el_pastas + "</li>" + "<br>";
+      text += "<li>" + kontakto_informacija.telefonas + "</li>" + "<br>";
+      text += "<li>" + kontakto_informacija.adresas + "</li>" + "<br>";
+      text += "<li>" + kontakto_informacija.pasto_kodas + "</li>" + "<br>";
+      text += "<li>" + kontakto_informacija.aprasymas + "</li>" + "<br>";
+      text += "</ul>";
+      document.getElementById("demo").innerHTML = text; // <- išvedame saraša
+    </script>
+  </body>
+</html>
