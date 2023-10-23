@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        width: 50%;
+        font-size: xx-large;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="tekstas2">
+      Arrived sototally in as between private, just maybe. Google Favour of so
+      as on pretty though elinor direct. Reasonable estimating be alteration we
+      themselves entreaties me of reasonably. Wordle Direct wished so be expect
+      polite valley. Whose asked stand it makes sense no spoil to. Prudent you
+      too his conduct feeling limited and. YouTube Side he lose paid as hope so
+      face upon be. Goodness did suitable learning put.
+    </p>
+    <p id="demo"></p>
+    <script>
+      let tekstas = `Arrived totally in as between private, just maybe. <a href = https://www.google.com>Google</a> Favour of so as on pretty though elinor direct.
+      Reasonable estimating be alteration we themselves entreaties me of reasonably. <a href = https://www.nytimes.com/games/wordle>Wordle</a>
+      Direct wished so be expect polite valley.As Whose asked stand it makes sense no spoil to.
+      Prudent you too his conduct feeling limited and. <a href = https://www.youtube.com/>YouTube</a>
+      Side he lose paid as hope so face upon be. Goodness did suitable learning put.<br><br>`;
+      let zodis1 = /\b[T|t]\w{1,}/g;
+      // Šitoje užduotyje viskas tas pats kaip penktoje ir šeštoje tik vietoj kitu raidžių mes ieškome T raidės prasidedančių žodžių
+      let upper = tekstas.replace(/\b[T|t]\w{1,}/gi, function (x) {
+        return x.bold();
+      });
+      let zodis2 = tekstas.match(zodis1); //Surandame žodžius
+      let zodis3 = zodis2.join(" | "); // Apjungiame juos tarpais ir | symboliu
+      let zodziai =
+        "Žodžiai prasidedantys t raide: <br>" + zodis3.toUpperCase(); // Tada pakeičiam visus žodžius didžiosiom raidėm.
+
+      let zodziukiekis = tekstas.match(zodis).length;
+      document.getElementById("tekstas2").innerHTML = upper;
+      document.getElementById("demo").innerHTML =
+        "<br>Žodžiu kiekis(prasideda raide t): " + zodziukiekis + "<br>" + zodziai;//Išvedame rezultatą
+    </script>
+  </body>
+</html>

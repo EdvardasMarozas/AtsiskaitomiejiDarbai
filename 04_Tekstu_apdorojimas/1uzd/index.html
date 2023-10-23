@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        width: 50%;
+        font-size: xx-large;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="demo">
+      Arrived totally in as between private.
+      <a href="https://www.google.com">Google</a> Favour of so as on pretty
+      though elinor direct. Reasonable estimating be alteration we themselves
+      entreaties me of reasonably.
+      <a href="https://www.nytimes.com/games/wordle">Wordle</a> Direct wished so
+      be expect polite valley. Whose asked stand it sense no spoil to. Prudent
+      you too his conduct feeling limited and.
+      <a href="https://www.youtube.com">YouTube</a> Side he lose paid as hope so
+      face upon be. Goodness did suitable learning put.<br /><br />
+    </p>
+    <!-- Turime teksta Html formate  -->
+    <p id="urls"></p>
+    <script>
+      let tekstas = document.getElementById("demo").innerHTML; // Pasiemame HTML tekstą ir priskiriame jį prie kintamojo tekstas
+      let nuo = 0; // Turime kintąmajį nuo, kuris duos koordinates nuo kur pradėti ieškoti <a href žymes
+      let link = "Links: <br>"; // Sukuriame kintamąjį link, prie kurio galėsime, kad ciklas priskirtu visas HTML nuorodas
+      while (tekstas.indexOf("<a", nuo) != -1) {
+        // Susikuriame ciklą, while, kuris išves nuorodų pozicijas ir pačias nuorodas
+        // Sudarome sąlyga, kad patikrintu ar yra html tekste nuorodų, kurie prasideda <a,
+        // ir jei nėra, išves -1 ir ciklas baigsis
+        let pozicija1 = tekstas.indexOf('<a href="', nuo) + '<a href="'.length; //Šičią prirašome + '<a href="'.length,
+        // kad galėtume pasiimti nuorodos pradžia, kuri praside kaip pvz. nuo https
+        let pozicija2 = tekstas.indexOf('"', pozicija1); // Ir čia pasiemame nuorodos galą
+        let nuoroda = tekstas.substring(pozicija1, pozicija2); // Ištraukiam su gautom nuorodos pozicijom pačią nuorodą
+        link += nuoroda + "<br>"; // Priskiriame nuorodą prie kintamojo link
+        nuo = pozicija2; // praėjus ciklą, nuo index per šoks išmesta url ir pradės ieškot kitos <a reiškmės indexo.
+      }
+      document.getElementById("urls").innerHTML = link; //Išvedame nuorodas
+      //  <([a-z]+)(?![^>]*\/>)[^>]*>
+    </script>
+  </body>
+</html>

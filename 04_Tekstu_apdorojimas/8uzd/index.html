@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-size: xx-large;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="demo"></p>
+
+    <script>
+      const elpastas = "jonas.jonaitis@gmail.com"; // Turime paprastą el. paštą
+      let tekstas = elpastas.matchAll(/(.*)@(.*\..*)/gi); // Sudarome kinatamjį tekstas
+      // Naudodamiesi Regex'a, surasime visus el.pašto duomenis,
+      // Kad galėtumėme ištraukti tam tikrus el.pašto duomenis, Regex'e suformuojame grupes,
+      // ir per grupes galėsime ištraukti tam tikrus duomenis.
+      let result = "";
+      for (let element of tekstas) {
+        // Sukuriame for ciklą, kuriame atskirsime(Parse'insim) visus el.pašto duomenis
+        // ir tuos duomenis priskirsime kintamajam result
+        result += "El. Paštas: " + element[0] + "<br>";
+        result += "Vartotojas: " + element[1] + "<br>";
+        result += "Domenas: " + element[2];
+      }
+      document.getElementById("demo").innerHTML = result; // Išvedame galutinį resultatą
+    </script>
+  </body>
+</html>

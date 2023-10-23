@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #demo {
+        width: 50%;
+        font-size: xx-large;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="demo">
+      Arrived totally in as between private.
+      <a href="https://www.google.com">Google</a> Favour of so as on pretty
+      though elinor direct. Reasonable estimating be alteration we themselves
+      entreaties me of reasonably.
+      <a href="https://www.nytimes.com/games/wordle">Wordle</a> Direct wished so
+      be expect polite valley. Whose asked stand it sense no spoil to. Prudent
+      you too his conduct feeling limited and.
+      <a href="https://www.youtube.com">YouTube</a> Side he lose paid as hope so
+      face upon be. Goodness did suitable learning put.<br /><br />
+    </p>
+    <!-- Turime teksta Html formate  -->
+    <script>
+      let tekstas = document.getElementById("demo").innerHTML; // Pasiemame HTML tekstą ir priskiriame jį prie kintamojo tekstas
+      let url = tekstas.matchAll(/<a href="(.+?)">(.*?)<\/a>/gi); // Naudojame Regex, kad rastumėm visas Nuorodas, kurios prasideda
+      // Ir turi <a href reikšmes ir baigiasi </a>. Kad gauti visas nuorodas, naudojame matchAll metodą
+      // Svarbu pabrėžti, kad kai norim kažka specifinio ištraukti iš regex'o naudojame grupes
+      // grupės priskiriamos skliausteleis ()
+      // Taip pat reikia pabrėžti, kad regex'o grupės prasideda nuo [0] ir kad visada regex'o grupė [0], yra visas regex'as
+      // o jau toliau eina kas skliausteliuose iš kairės į dešinę
+      // Tai šiuo atveju regex'o [0] išves viska kas prasideda nuo <a href ir baigiasis </a> , o ne pačia nuoroda.
+      let result = "Links: <br>";
+      for (let element of url) {
+        // Sukuriame ciklą for kuriame ieškosim HTML teksto nuorodų
+        // Mums reikia Regex'o pirmos grupės, o jinai yra [1] ne [0]
+        result += element[1] + "<br>";
+        // Nuorodas rasime ištraukdami iš regex'o [1] grupe
+      }
+      document.getElementById("demo").innerHTML = tekstas + result; // Išvedame resultatą
+    </script>
+  </body>
+</html>

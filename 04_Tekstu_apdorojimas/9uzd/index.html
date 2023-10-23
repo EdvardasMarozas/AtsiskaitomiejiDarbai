@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-size: xx-large;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="demo"></p>
+
+    <script>
+      const url = "https://moodle.ktmc.lt/mod/assign/view.php?id=25"; // Turime URL adresą
+      let tekstas = url.matchAll(
+        /(.*):\/\/(\w+\.)?(\w+\.\w+)(\/.*\/)?(\w+\.?\w+)?\??(.*)?/gi
+      );
+      // URl adrese surandame visa informaciją apie patį adresą ir priskiriam grupes
+      // kad galėtumėme atskirti duomenis
+      let result = "";
+      for (let element of tekstas) {
+        // Sukuriame ciklą for, kuriame suformuojam ir gaunam visus URL adreso atskirtus duomenis
+        // URL regex'as turi 6 grupes. Kiekviena grupe parašoma ir priskiriama atskirai
+        // Taip yra prirašom if sąlyga, kad nepateiktu tam tikrų duomenų jei jų tesiog nėra
+        result += "Url adresas: " + element[0] + "<br>";
+        result += "Protokolas: " + element[1] + "<br>";
+        result += "Domenas: " + element[3] + "<br>";
+        if (element[2]) {
+          result += "Subdomenas: " + element[2] + "<br>";
+        }
+        if (element[4]) {
+          result += "Katalogas: " + element[4] + "<br>";
+        }
+        if (element[5]) {
+          result += "Vykdomasis failas: " + element[5] + "<br>";
+        }
+        if (element[6]) {
+          result += "Parametrai: " + element[6] + "<br>";
+        }
+      }
+      document.getElementById("demo").innerHTML = result; // Išvedam gauta reusltatą
+      // Man, deja, nepaėjo padaryti taip kad nebutų taško po subdomeno
+      // Nes kai padarau taska optional su klaustuku ?
+      // Su (subdomenas) ir \.? Pvz: (\w+\.)? => (\w+)?\.? Viskas kaip ir veikia iki tol kol ištrinu subdomena
+    </script>
+  </body>
+</html>

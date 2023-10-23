@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        width: 50%;
+        font-size: xx-large;
+      }
+      img {
+        width: 30%;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="demo">
+      Arrived totally in as between private.
+      <img
+        src="https://images.freeimages.com/images/large-previews/31a/traverse-1234278.jpg"
+      />
+      Favour of so as on pretty though elinor direct. Reasonable estimating be
+      alteration we themselves entreaties me of reasonably.
+      <img
+        src="https://images.freeimages.com/images/large-previews/218/my-dog-cutter-1499799.jpg"
+      />
+      Direct wished so be expect polite valley. Whose asked stand it sense no
+      spoil to. Prudent you too his conduct feeling limited and.
+      <img
+        src="https://images.freeimages.com/images/large-previews/3b2/prague-conference-center-1056491.jpg"
+      />
+      Side he lose paid as hope so face upon be. Goodness did suitable learning
+      put.<br /><br />
+    </p>
+    <p id="urls"></p>
+    <script>
+      // Šitoje užduotyje irgi viskas tas pats kaip antroje tik čia ieškom img nuorodų vietoj adreso nuorodų
+      // Viskas tas pats kaip antroje tik <a href pakeičiam <img src
+      let tekstas = document.getElementById("demo").innerHTML;
+      let url = tekstas.matchAll(/<img src="(.+?)">/gi);
+      let result = "Image Links: <br>";
+      for (let element of url) {
+        result += element[1] + "<br><br>";
+      }
+      document.getElementById("urls").innerHTML = result;
+    </script>
+  </body>
+</html>

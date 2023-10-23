@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        width: 50%;
+        font-size: xx-large;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="tekstas2">
+      Arrived sototally in as between private. Google Favour of so as on pretty
+      though elinor direct. Reasonable estimating be alteration we themselves
+      entreaties me of reasonably. Wordle Direct wished so be expect polite
+      valley. Whose asked stand it sense no spoil to. Prudent you too his
+      conduct feeling limited and. YouTube Side he lose paid as hope so face
+      upon be. Goodness did suitable learning put.
+    </p>
+    <p id="demo"></p>
+    <script>
+      let tekstas = `Arrived totally in as between private. <a href = https://www.google.com>Google</a> Favour of so as on pretty though elinor direct.
+       Reasonable estimating be alteration we themselves entreaties me of reasonably. <a href = https://www.nytimes.com/games/wordle>Wordle</a>
+       Direct wished so be expect polite valley.As Whose asked stand it sense no spoil to.
+       Prudent you too his conduct feeling limited and. <a href = https://www.youtube.com/>YouTube</a>
+       Side he lose paid as hope so face upon be. Goodness did suitable learning put.<br><br>`;
+      // Turime teksta ne HTML formate
+      let zodis = /\b[A|a]\w{1,}/g; // Mes ieškome visų žodžių, kurie prasideda a raide
+      // Juos galime rasti naudodami Regex, Regex'e panaudojam quantifier {}
+      // šiuo atveju parašom {1,}, kad rastas žodis būtų 1 ir daugiau raide
+      let upper = tekstas.replace(/\b[A|a]\w{1,}/gi, function (x) {
+        return x.bold().toUpperCase();
+      }); // Čia galime pakeisti pati tekstą ir išryškinti visus žodžius, kurie prasideda a raide
+      // Keičiam tekstą metodu replace, kuris pakeis visus regex'o surastus elementus į didžiasias raides ir jas pajuodins
+      let zodziukiekis = tekstas.match(zodis).length; // Čia surasime kiek a raide prasidedančių žodžių yra tekste(skaičius)
+      document.getElementById("tekstas2").innerHTML = upper; // Išvedame pakeista teksta
+      document.getElementById("demo").innerHTML =
+        "<br>Žodžiu kiekis(prasideda raide a): " + zodziukiekis; // Išvedame a raide prasidedančių žodžių kiekį.
+    </script>
+  </body>
+</html>
