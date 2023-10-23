@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daugybos lentele</title>
+    <style>
+      table,td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 15px;
+        word-spacing: 3px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 10%;
+      } /* Sukuriamas elementas <style>, kuris nustato table border ir pozicija */
+    </style>
+  </head>
+  <body>
+    <h1>Daugybos lentelė</h1>
+    <p id="demo"></p>
+    <table></table>
+    <script>
+      let isvedimas = "<table><tr><td>"; // Sudarome lentelės pradžia
+      let suma = 1;
+      for (let x = 1, y = 1; y <= 10, x <= 10; y++) {
+        suma = x * y;
+        isvedimas += x + " * " + y + " = " + suma + "<br>";
+        if (y == 10) {
+          if (x < 5) {
+            isvedimas += "</td>" + "<td>";
+          }
+          if (x == 5) {
+            isvedimas += "</td></tr><tr><td>";
+          }
+          if (x == 10) {
+            isvedimas += "</td></tr></table>";
+          } else if (x > 5) {
+            isvedimas += "</td>" + "<td>";
+          } // Sudarome if salygą kad kai ciklo galas bus pasiektas lentele bus uždaroma,
+          // o else if kad papraščiausiai ciklas testusi iki jo galo
+          x += 1; // Pridedam 1 kad galėtume eiti prie kito Daugybos Lentelės skaičiaus
+          y = 0; // Padarom y 0 kad cikla pradėtume išnaujo, bet ši kart su kituo skaičium
+        } // <- šitas ciklas skirtas pagrinde lentelės sudarymui ir kitu daugybos lentelės skaičių pratesimui
+      } // Sudarome pagrindini ciklą, kuris padarys mum vieno skaičiaus daugyba nuo 1 iki 10
+      document.getElementById("demo").innerHTML = isvedimas; // išvedam lentelę
+    </script>
+  </body>
+</html>

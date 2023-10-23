@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lentele</title>
+    <style>
+      table,th,td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+      } /* Sukuriamas elementas <style>, kuris nustato table border */
+    </style>
+  </head>
+  <body>
+    <div id="demo"></div>
+    <script>
+      const salys = {
+        Lietuva: "Vilnius",
+        Latvija: "Ryga",
+        Estija: "Talinas",
+        Belgija: "Briuselis",
+        Danija: "Kopenhaga",
+        Prancūzija: "Paryžius",
+        Vokietija: "Berlynas",
+        Portugalija: "Lisabona",
+        Lenkija: "Varšuva",
+        Čekija: "Praha",
+        Graikija: "Atėnai",
+        Italija: "Roma",
+        Austrija: "Viena",
+      }; // pateiktas šaliu masyvas 
+      let isevdimas = "<b>Nr. Šalis Sostinė</b><br>"; // Sudarome Pirmo sarašo pradžia
+      let isevdimas2 =
+        "<table><tr><th>Nr.</th> <th>Šalis</th> <th>Sostinė</th></tr>"; // Sudaroma Antro sarašo pradžia,
+            //kadangi kuriame saraša lentelės pavidalu, pridėjau table html elementus.
+      let y = 1; //  Pirmo sarašo nr kintamasis
+      let q = 1; // Antro sarašo nr kintamasis
+      for (const key in salys) {
+        isevdimas += y + " " + key + " &nbsp" + salys[key] + "<br>";
+        y += 1;
+      } // Padarome ciklą, kuris išves visa masyvo salys informacija vertikaliai
+      // cia key yra masyvo salys raktai tai yra šiuo atveju šalies pavadinimai
+      // o salys[key] paiema pačio masyvo elementus tai yra šiuo atveju šalies sostine;
+      for (const key in salys) {
+        isevdimas2 +=
+          "<tr><td>" +
+          q +
+          ".</td> " +
+          "<td>" +
+          key +
+          "</td>" +
+          "<td>" +
+          salys[key] +
+          "</td></tr>";
+        q += 1;
+        if (key == key.length) {
+          isevdimas2 += "</table>";
+        }
+      } // kuriamas tas pats ciklas kaip praeitai tik šį sudarome lenteles pavidalu
+      // del to ir yra papildomi "<tr>" "<td>"
+      document.getElementById("demo").innerHTML =
+        isevdimas + "<br>" + isevdimas2; // išvedam resultata
+    </script>
+  </body>
+</html>

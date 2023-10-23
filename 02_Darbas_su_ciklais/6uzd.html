@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      #chessboard {
+        width: 400px;
+        height: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10%;
+      }
+      .chess-square {
+        float: left;
+        width: 48px;
+        border: 1px solid black;
+        height: 48px;
+        background-color: #fff;
+      } /*
+      Sukuriam elementą <style>, kuris nustato #chessboard div plotį ir aukštį į 400 pikselių. 
+      Taip pat sukuriame klasę, vadinamą .chess-square, kuri nustato elementų plotį ir aukštį į 50 pikselių ir slankioja į kairę.
+      (šiuo atveju 48px darom kad išeitu pridėti border)
+      */
+    </style>
+  </head>
+  <body>
+    <div id="chessboard"></div><!-- sukuriam elementą, kuriame bus mūsų šachamtų lentos raštas -->
+    <script>
+      let chessboard = document.getElementById("chessboard");
+      for (let x = 0; x < 8; x++) {
+        for (let y = 0; y < 8; y++) {
+          let chessSquare = document.createElement("div");
+          chessSquare.className = "chess-square"; // Kiekvienai for ciklo iteracijai sukuriam <div> elementą, kurio klasė yra "chess-square".
+          if ((x + y) % 2 == 0) {
+            chessSquare.style.backgroundColor = "black";
+          } // Jei dabartinės eilutės ir stulpelio suma yra lygi, šachmatų kvadrato fono spalvą nustatoma į juodą. Kitu atveju fono spalva yra balta. 
+          chessboard.appendChild(chessSquare); // Šachmatų kvadrato <div> elementas pridedamas prie #chessboard div.
+        }
+      } // ciklas kuris eina per 8 eilutes ir 8 stulpelius
+    </script>
+  </body>
+</html>

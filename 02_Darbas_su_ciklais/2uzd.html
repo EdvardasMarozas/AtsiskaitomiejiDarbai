@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p id="demo"></p>
+    <script>
+      let suma = 0;
+      let skaicius = 25;
+      let isvedimas = ""; // Sukuriame kintamuosius ciklui
+      for (let x = 1; x <= skaicius; x++) {
+        suma += x;
+        if (x == skaicius) {
+          isvedimas += x;
+        } // Sukuriam if salygą tam kad skaičių sumos gale nebutu papildomo "+"
+        else {
+          isvedimas += x + "+";
+        }
+      } // Sukuriam ciklą, kuris susumuoja visus skaičius,suma bus priklausoma nuo skaičiaus reikšmės
+      isvedimas += "=" + suma;
+      document.getElementById("demo").innerHTML = isvedimas; //Išvedame tekstą į puslapi
+    </script>
+  </body>
+</html>

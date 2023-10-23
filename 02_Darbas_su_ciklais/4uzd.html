@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p id="demo"></p>
+    <script>
+      let isvedimas = "";
+      let skaicius = 5;
+      let suma = 1;
+      isvedimas += skaicius + "! = ";
+      for (; 0 < skaicius; skaicius--) {
+        suma *= skaicius;
+        if (skaicius == 1) {
+          isvedimas += skaicius;
+        } // if salyga parašyta tam kad nebutu ženklo "*" po paskutinio skaičiaus
+        else {
+          isvedimas += skaicius + "*";
+        }
+      } //  faktorialo procese skaičiai mažėja (del to yra opertoriai --) ir dauginasi iš kito
+      // mažėjančio skaičiaus (suma*=skaicius)
+      isvedimas += " = " + suma; // dedamas = ženklas dėl vaizdo ir parodome visa faktorialo suma.
+      document.getElementById("demo").innerHTML = isvedimas; // išvedam teksta
+    </script>
+  </body>
+</html>

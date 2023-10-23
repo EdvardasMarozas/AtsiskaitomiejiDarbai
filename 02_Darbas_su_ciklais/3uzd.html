@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p id="demo"></p>
+    <script>
+      let isvedimas = "Skaičiai kurie dalija iš 100 be liekanos: <br> ";
+      let skaicius = 100;
+      for (let x = 1; x <= skaicius; x++) {
+        if (x % 5 == 0) {
+          isvedimas += x + "<br>";
+        } // x%5==0 reiškia jei skaičius x dalija iš 5 ir nepalieka liekanos bus pridedamas prie išvedimo
+      } // Sukuriam cikla, kur, jei skaičius x dalijasi iš 5 sugeneruojamas skaičius
+      document.getElementById("demo").innerHTML = isvedimas; // paskui tuos skaičius išvedamam
+    </script>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p id="demo"></p>
+    <script>
+      const month = [
+        "Sausis",
+        "Vasaris",
+        "Kovas",
+        "Balandis",
+        "Gegužė",
+        "Birželis",
+        "Liepa",
+        "Rugpjūtis",
+        "Rugsėjis",
+        "Spalis",
+        "Lapkritits",
+        "Gruodis",
+      ]; // Sukuriam masyvą, kuris turi visus mėnesius.
+      let resultatas = "";
+      for (let x = 0, y = 1; x < month.length; x++, y++) {
+        resultatas += y + "-asis mėnuo yra - " + month[x] + "<br>";
+      } // Sukuriam ciklą, kuris išves visus mėnesius su tekstu, pridėjam y kad parodytu kelintas mėnesis yra
+      document.getElementById("demo").innerHTML = resultatas; //Idedame tekstą į puslapi
+    </script>
+  </body>
+</html>

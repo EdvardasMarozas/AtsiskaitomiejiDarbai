@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      table,th,td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+      } /* Sukuriamas elementas <style>, kuris nustato table border */
+    </style>
+  </head>
+  <body>
+    <div id="demo"></div>
+    <script>
+      const salys2 = {
+        lt: ["Lietuva", "Vilnius"],
+        lv: ["Latvija", "Ryga"],
+        ee: ["Estija", "Talinas"],
+        be: ["Belgija", "Briuselis"],
+        dk: ["Danija", "Kopenhaga"],
+        fr: ["Prancūzija", "Paryžius"],
+        de: ["Vokietija", "Berlynas"],
+        pt: ["Portugalija", "Lisabona"],
+        pl: ["Lenkija", "Varšuva"],
+        cz: ["Čekija", "Praha"],
+        gr: ["Graikija", "Atėnai"],
+        it: ["Italija", "Roma"],
+        at: ["Austrija", "Viena"],
+      }; // pateiktas šaliu masyvas kaip ir praeitoje užduotyje tik čia yra papildomi šalies kodo indeksai
+      let isvedimas =
+        "<table><tr><th>Kodas.</th><th>Šalis</th><th>Sostinė</th></tr>"; // sudarome lentele, tad prireiks table elements
+      for (i = 0; i < Object.keys(salys2).length; i++) {
+        isvedimas +=
+          "<tr><td>" +
+          Object.keys(salys2)[i].toUpperCase() + // šalies indekas (Object.keys(salys2)[i]), kuri padarom didžiosiom raidėm su .toUpperCase()
+          "</td><td>" +
+          Object.values(salys2)[i][0] + // Pirmas masyvo elementas
+          "</td><td>" +
+          Object.values(salys2)[i][1] + // Antras masyvo elementas
+          "</td></tr>";
+        if (i == Object.keys(salys2).length - 1) {
+          isvedimas += "</table>";
+        } // Sudaroma if salyga tam kad ciklo pabaigoje galetume pabaigti lentele su"</table>"
+      } // Sudarome ciklą, kuris paiims masyvos visus elementus, įskaitant masyvo raktus, kurie yra šiuo atveju šalies kodo indeksai
+      document.getElementById("demo").innerHTML = isvedimas;
+    </script>
+  </body>
+</html>
