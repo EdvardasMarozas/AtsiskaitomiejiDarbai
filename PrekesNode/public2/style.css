@@ -1,0 +1,31 @@
+body {
+  background: #77a1d3;
+  background: -webkit-linear-gradient(to right, #e684ae, #79cbca, #77a1d3);
+  background: linear-gradient(to right, #e684ae, #79cbca, #77a1d3);
+}
+.box1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 80vh;
+}
+#demo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 60em;
+}
+#demo a {
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+}
+#demo a:hover {
+  text-decoration: underline;
+  color: rgba(0, 0, 0, 0.699);
+}
+h1 {
+  font-size: 4em;
+  text-align: center;
+}

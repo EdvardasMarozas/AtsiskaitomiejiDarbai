@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background: #314755;
+        background: -webkit-linear-gradient(to right, #26a0da, #314755);
+        background: linear-gradient(to right, #26a0da, #314755);
+      }
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .card {
+        width: 50rem;
+        text-align: center;
+      }
+      img {
+        width: 20rem;
+      }
+      h5 {
+        width: 20%;
+        font-size: xx-large;
+      }
+      .tekstas {
+        font-size: larger;
+        font-weight: 300;
+      }
+      .antras {
+        width: 30%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <h1><%= prekesPavadinimas %></h1>
+        <img src="<%= prekesPaveiksliukas %>" alt="prekės_nuotrauka" />
+      </div>
+      <div class="antras">
+        <h5><%= prekesKaina %> &euro;</h5>
+        <p class="tekstas"><%= prekesAprasymas %></p>
+      </div>
+    </div>
+  </body>
+</html>
