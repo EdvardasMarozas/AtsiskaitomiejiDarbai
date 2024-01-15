@@ -1,0 +1,31 @@
+<%- include("../layout/header") %>
+
+<div class="container">
+  <h1><%= title %></h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Image</th>
+        <th scope="col">Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let i in pets) { %>
+      <tr>
+        <th scope="row"><%= pets[i].ID %></th>
+        <td>
+          <img src="images/<%= pets[i].image%>" style="max-height: 40px" />
+        </td>
+        <td><a href="/petwars/pets/<%= pets[i].ID %>"><%= pets[i].name %></a></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+
+  <p>
+    <a class="btn btn-outline-secondary btn-sm" href="/petwars"> GO BACK</a>
+  </p>
+
+  <%- include("../layout/footer") %>
+</div>

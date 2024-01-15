@@ -1,0 +1,35 @@
+<%- include("../layout/header", {title: "add a pet"}) %>
+
+<div class="container">
+    <h1>Add a Pet</h1>
+
+    <% if (messages) { %>
+      <% for (let message of messages) { %>
+        <div class="alert alert-warning" role="alert">
+          <%= message %>
+        </div>
+      <% } %>
+    <% } %>
+
+    <form action="/petwars" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="imageInput" class="form-label">Photo</label>
+            <input type="file" class="form-control" name="image" id="imageInput" placeholder="">
+          </div>
+        <div class="mb-3">
+          <label for="nameInput" class="form-label">Pet name</label>
+          <input type="text" class="form-control" name="name" id="nameInput" value="<%= old ? old.name : '' %>" placeholder="" >
+        </div>
+        <div class="mb-3">
+          <label for="emailInput" class="form-label">Your Email</label>
+          <input type="email" class="form-control" name="email" id="emailInput" value="<%= old ? old.email : '' %>" placeholder="" >
+        </div>
+        <div class="mb-3">
+          <label for="speciesInput" class="form-label">species</label>
+          <input type="text" class="form-control" name="species" id="speciesInput" value="<%= old ? old.species : '' %>" placeholder="" >
+        </div>
+        <button type="submit" class="btn btn-outline-warning"><i class="bi bi-plus-circle"></i> ADD</button> <a class="btn btn-outline-warning" href="/petwars"> GO BACK</a>
+      </form>
+</div>
+
+<%- include("../layout/footer") %>
