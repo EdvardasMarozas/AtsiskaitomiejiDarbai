@@ -34,19 +34,32 @@ module.exports = {
       return false;
     }
   },
-  updateSpecies: async function (db, spiecesData, petID) {
-    const q = `UPDATE pets
-              INNER JOIN  species  
-              ON species.ID = pets.species_ID  
-              SET pets.species_ID = species.ID
-              WHERE species.name = ? AND pets.ID = ?`;
-    return await db.query(q, [spiecesData.name, petID]);
+  // updateSpecies: async function (db, spiecesID, petID) {
+  //   const q = `UPDATE pets SET species_ID= ? WHERE ID = ?;`
+  //   return await db.query(q, [spiecesID, petID]);
+  // },
+  updateSpecies: async function (db, spiecesID, specieName) {
+    const q = `UPDATE pets SET pets.species_ID = ?
+    FROM pets JOIN species ON species.ID = pets.ID 
+    WHERE species.name = '?';`;
+    return await db.query(q, [spiecesID, petID]);
   },
-  showSpecies: async function (db, data){
-    const q = `SELECT species.name FROM pets
-               INNER JOIN species
-               ON species.ID = pets`;
-    return await db.query(q, [])
+  newestSpeciesID: async function (db){
+    const q = `SELECT ID FROM species ORDER BY species.ID DESC LIMIT 1;`;
+    const [results, fields] = await db.query(q);
+    return [results[0].ID, fields];
+  },
+  deleteSpiece: async function (db, name) {
+    const q = `DELETE FROM species WHERE name = ?;`;
+    return await db.query(q, [name]);
+  },
+  diableKeyCheck: async function(db) {
+  q = `SET FOREIGN_KEY_CHECKS=0;`;
+  return await db.query(q);
+  },
+  enableKeyCheck: async function(db) {
+  q = `SET FOREIGN_KEY_CHECKS=1;`;
+  return await db.query(q);
   },
   getRandomID: async function (db) {
     const q = `SELECT ID FROM pets ORDER BY RAND() LIMIT 2;`;

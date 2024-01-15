@@ -21,16 +21,16 @@
   <% if (oldPet1) { %>
   <div class="alert alert-warning" role="alert">
     <div class="result">
+      <h2 class="text-center">Results</h2>
       <div class="d-flex justify-content-center gap-5">
-        <h2>Results</h2>
         <div class="pr-5">
           <form action="/petwars/" method="post">
             <input type="hidden" name="_method" value="PUT" />
             <a href="/petwars/pets/<%=  %>"
               ><img
-                src="images/<%= pet1.image%>"
+                src="images/<%= oldPet1.image%>"
                 style="height: 300px"
-                class="pr-5"
+                class="pr-5 img-thumbnail"
             /></a>
           </form>
         </div>
@@ -39,19 +39,20 @@
             <input type="hidden" name="_method" value="PUT" />
             <a href="/petwars/pets/<%=  %>"
               ><img
-                src="images/<%= pet2.image%>"
+                src="images/<%= oldPet2.image%>"
                 style="height: 300px"
-                class="pr-5"
+                class="pr-5 img-thumbnail"
             /></a>
           </form>
         </div>
+      </div>
         <p class="text-center">
           <%= %> of people picked
           <br />
-          <a href="/petwars/pets/<%=  %>"><%= pet1.name %></a> over
-          <a href="/petwars/pets/<%=  %>"><%= pet2.name %>.</a>
+          <a href="/petwars/pets/<%= oldPet1.ID %>"><%= oldPet1.name %></a> over
+          <a href="/petwars/pets/<%= oldPet2.ID %>"><%= oldPet2.name %>.</a>
         </p>
-      </div>
+        <h2 class="text-center">Next PetBattle!</h2>
       <% } %>
 
       <div class="text-center mb-5 fs-5">
@@ -60,23 +61,27 @@
       <div class="d-flex justify-content-center gap-5">
         <div class="pr-5">
           <form action="/petwars/" method="post">
-            <a href="/petwars/"
+            <input type="hidden" name="winner" value="<%= pet1.ID %>">
+            <input type="hidden" name="loser" value="<%= pet2.ID %>">
+            <a class="post_link" href="http://localhost:3000/petwars"
               ><img
                 id="<%= pet1.ID %>"
                 src="images/<%= pet1.image%>"
                 style="height: 300px"
-                class="pr-5"
+                class="pr-5 img-thumbnail"
             /></a>
           </form>
         </div>
         <div class="pl-5">
           <form action="/petwars/" method="post">
-            <a href="/petwars/"
+            <input type="hidden" name="winner" value="<%= pet2.ID %>">
+            <input type="hidden" name="loser" value="<%= pet1.ID %>">
+            <a class="post_link" href="http://localhost:3000/petwars"
               ><img
                 id="<%= pet2.ID %>"
                 src="images/<%= pet2.image%>"
                 style="height: 300px"
-                class="mr-5"
+                class="mr-5 img-thumbnail"
             /></a>
           </form>
         </div>
@@ -87,6 +92,19 @@
         Can't decide <a href="/petwars/">refresh</a> the page for a draw
       </div>
     </div>
-    <%- include("../layout/footer") %>
   </div>
 </div>
+
+<script>
+  const post_links = document.getElementsByClassName("post_link");
+  if (post_links.length){
+    for (let i = 0; i < post_links.length; i++) {
+      post_links[i].addEventListener("click", (evt) => {
+        evt.preventDefault();
+        evt.currentTarget.parentNode.submit();
+        return false;
+      });
+    }
+  }
+</script>
+<%- include("../layout/footer") %>

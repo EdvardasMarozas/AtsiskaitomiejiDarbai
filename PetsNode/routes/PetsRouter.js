@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const PetsController = require('../controllers/PetsController');
 
-router.get('/', PetsController.index)
+router.get('/', PetsController.index);
 router.get("/create", PetsController.create);
-router.post("/", PetsController.store);
+router.post("/post", PetsController.store);
+router.post("/", PetsController.result);
 router.get('/pets', PetsController.showAll);
 router.get('/adminpanel', PetsController.editpage);
 router.get('/pets/:id', PetsController.showbyID);

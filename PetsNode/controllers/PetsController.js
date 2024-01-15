@@ -1,3 +1,4 @@
+const { name } = require("ejs");
 const _pets = require("../models/pets");
 var htmlspecialchars = require("htmlspecialchars");
 var fs = require("node:fs/promises");
@@ -98,14 +99,16 @@ module.exports = {
   },
   store: async function (req, res, next) {
     const [pet, specie, valid, messages] = petValidate(req);
-    let ID = req.params.id;
     if (valid) {
       try {
+        await _pets.diableKeyCheck(req.db);
         const petID = await _pets.create(req.db, pet);
+        await _pets.deleteSpiece(req.db, specie.name)
         await _pets.createSpecies(req.db, specie);
-        await _pets.updateSpecies(req.db, specie, ID);
-        console.log(req.params.id);
-
+        const [specieID, fields] = await _pets.newestSpeciesID(req.db);
+        await _pets.updateSpecies(req.db, specieID, petID);
+        await _pets.enableKeyCheck(req.db);
+        console.log(specie.name)
         if (req.file) {
           const ext = {
             "image/webp": ".webp",
@@ -230,28 +233,44 @@ module.exports = {
       const nr2 = number[1].ID;
       const [pet1, fields] = await _pets.getById(req.db, nr1);
       const [pet2] = await _pets.getById(req.db, nr2);
-      const oldPet1 = pet1;
-      const oldPet2 = pet2;
-      if (req.header("http://localhost:3000/petwars/")) {
-        res.render("Pets/result", { title: "Petwars", pet1: oldPet1, pet2: oldPet2 });
+      if (req.header("Referer") == "http://localhost:3000/petwars" | req.header("Referer") == "http://localhost:3000/petwars/") {
+        const oldPet1 = req.session.oldPet1;
+        const oldPet2 = req.session.oldPet2;
+        delete req.session.oldPet1;
+        delete req.session.oldPet2;
+        req.session.oldPet1 = pet1;
+        req.session.oldPet2 = pet2;
+        res.render("Pets/index", {
+          title: "Petwars",
+          oldPet1: oldPet1,
+          oldPet2: oldPet2,
+          pet1: pet1,
+          pet2: pet2,
+        });
       } else {
-        res.render("Pets/index", { title: "Petwars", pet1: pet1, pet2: pet2 });
+        req.session.oldPet1 = pet1;
+        req.session.oldPet2 = pet2;
+        res.render("Pets/index", { title: "Petwars", pet1: pet1, pet2: pet2, oldPet1: false, oldPet2: false});
       }
     } catch (err) {
       console.log(err);
       res.status(500).send("Server failure");
     }
   },
-  // result: async function (req, res, next) {
-  //   try {
-  //     const [vote] = await _pets.createBattle(req.db, this.index.pet1, this.index.pet2)
-  //     if(req.header("/petwars")){
-  //       res.render("Pets/result", {})
-  //     }
-  //     // res.redirect(req.header("Referer") ?? `/petwars/pets/${ID}/edit`);
-  //   } catch (err) {
-  //     console.log(err);
-  //     res.status(500).send("Server failure");
-  //   }
-  // }
+  result: async function (req, res, next) {
+    try {
+      await _pets.createBattle(req.db, req.body.winner, req.body.loser, `winner - ${req.body.winner}`)
+      console.log("cia2")
+      console.log(req.body)
+      // if(req.header("/petwars")){
+      //   res.render("Pets/result", {})
+      // }
+      res.redirect('/petwars')
+      // res.render("Pets/index", { title: "Petwars", pet1: pet1, pet2: pet2, pets: twoPets, oldPet1: false, oldPet2: false});
+      // res.redirect(req.header("Referer") ?? `/petwars/pets/${ID}/edit`);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server failure");
+    }
+  }
 };
