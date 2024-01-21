@@ -17,40 +17,38 @@ const validateImage = (req) => {
   if (req.file) {
     const mimetypes = ["image/webp", "image/png", "image/jpeg"];
     if (!mimetypes.includes(req.file.mimetype)) {
-      messages.push("Neleistinas failo tipas.");
+      messages.push("Accepted file types: jpg, png, jpeg, webp");
       valid = false;
     }
 
     if (req.file.size > 2 * 1024 * 1024) {
-      messages.push("Galima įkelti failus tik iki 2MB.");
+      messages.push("Max. file size: 2 MB.");
       valid = false;
     }
 
     image_name = validateText(req.file.originalname);
-  } 
+  }
 
   return [image_name, valid, messages];
 };
 
 module.exports = {
-  bookValidateUpdate: (req, book = {}) => {
+  petValidateUpdate: (req, pet = {}) => {
     let valid = true;
     const messages = [];
 
-    const validacija = validationResult(req);
+    const validation = validationResult(req);
     console.log("validacija");
-    console.log(validacija);
+    console.log(validation);
     console.log(req.body);
-
-    book.title = req.body.title ?? book.title;
-    book.author = req.body.author ?? book.author;
-    book.pages = req.body.pages ?? book.pages;
-    book.date = req.body.date ?? book.date;
-    book.genre = req.body.genre ?? book.genre;
-
-    if (!validacija.isEmpty()) {
-      // console.log(validacija.array());
-      for (let i of validacija.array()) {
+    
+    pet.name = req.body.name ?? pet.name;
+    pet.email = req.body.email ?? pet.email;
+    pet.species = req.body.species ?? pet.species;
+    
+    if (!validation.isEmpty()) {
+      console.log(validation.array());
+      for (let i of validation.array()) {
         messages.push(i.msg);
       }
       valid = false;
@@ -58,30 +56,31 @@ module.exports = {
 
     const [image, image_valid, image_messages] = validateImage(req);
     if (image) {
-        book.image = image;
+        pet.image = image;
         if (!image_valid) {
             valid = false;
             messages.push(...image_messages);
         }
     }
 
-    return [book, valid, messages];
+    return [pet, valid, messages];
   },
-  bookValidateStore: (req) => {
+  petValidateStore: (req) => {
     let valid = true;
     const messages = [];
 
-    const validacija = validationResult(req);
+    const validation = validationResult(req);
 
     // console.log("validacija");
-    // console.log(validacija);
+    // console.log(validation);
     // console.log(req.body);
 
-    const book = req.body;
+    const pet = req.body;
 
-    if (!validacija.isEmpty()) {
-      // console.log(validacija.array());
-      for (let i of validacija.array()) {
+    if (!validation.isEmpty()) {
+    //     console.log("validation array")
+    //   console.log(validation.array());
+      for (let i of validation.array()) {
         messages.push(i.msg);
       }
       valid = false;
@@ -89,72 +88,70 @@ module.exports = {
 
     const [image, image_valid, image_messages] = validateImage(req);
     if (image) {
-        book.image = image;
+        pet.image = image;
         if (!image_valid) {
             valid = false;
-            messages.concat(...image_messages);
+            messages.push(...image_messages);
         }
+    } else {
+        messages.push("Photo Not Given!");
+        valid = false;
     }
 
-    return [book, valid, messages];
+    return [pet, valid, messages];
   },
   // naujos knygos sukūrimo validavimo taisyklės
-  bookIDValidation: [
-    param("id").trim().escape().isInt().withMessage("Neteisingas knygos id"),
+  petIDValidation: [
+    param("id").trim().escape().isInt().withMessage("Wrong Pet ID!"),
   ],
   // naujos knygos sukūrimo validavimo taisyklės
   storeValidation: [
-    body("title")
+    body("name")
       .trim()
       .escape()
       .notEmpty()
-      .withMessage("Nenurodytas pavadinimas")
-      .isLength({ min: 5 })
-      .withMessage("Pavadinimas per trumpas"),
+      .withMessage("Name is not specified!")
+      .isLength({ min: 2 })
+      .withMessage("Name is too short!"),
     //   body("title").trim().escape().optional().isLength({ min: 5 }).withMessage('Pavadinimas per trumpas'),
-    body("author")
+    body("email")
       .trim()
       .escape()
       .notEmpty()
-      .withMessage("Nenurodytas autorius"),
-    body("pages")
+      .withMessage("Email is not specified!")
+      .isEmail()
+      .withMessage("Invalid email address!"),
+    body("species")
       .trim()
       .escape()
       .notEmpty()
-      .withMessage("Nenurodytas puslapių skaičius")
-      .isNumeric()
-      .withMessage("Puslapių skaičius turi būti skaičius"),
-    body("date")
-      .trim()
-      .escape()
-      .notEmpty()
-      .withMessage("Nenurodyti metai")
-      .isInt({ min: 1900, max: 2030 })
-      .withMessage("Metai turi būti nurodyti nuo 1900 iki 2030"),
-    body("genre").trim().escape().notEmpty().withMessage("Nenurodytas žanras"),
+      .withMessage("Species is not specified")
+      .isLength({ min: 2 })
+      .withMessage("Species is too short!")
   ],
   // naujos knygos sukūrimo validavimo taisyklės
   updateValidation: [
-    body("title")
+    body("name")
       .trim()
       .escape()
-      .optional()
-      .isLength({ min: 5 })
-      .withMessage("Pavadinimas per trumpas"),
+      .notEmpty()
+      .withMessage("Name is not specified!")
+      .isLength({ min: 2 })
+      .withMessage("Name is too short!"),
     //   body("title").trim().escape().optional().isLength({ min: 5 }).withMessage('Pavadinimas per trumpas'),
-    body("author").trim().escape().optional(),
-    body("pages")
+    body("email")
       .trim()
       .escape()
-      .optional()
-      .isNumeric()
-      .withMessage("Puslapių skaičius turi būti skaičius"),
-    body("date")
+      .notEmpty()
+      .withMessage("Email is not specified!")
+      .isEmail()
+      .withMessage("Invalid email address!"),
+    body("species")
       .trim()
       .escape()
-      .optional()
-      .isInt({ min: 1900, max: 2030 })
-      .withMessage("Metai turi būti nurodyti nuo 1900 iki 2030"),
-    body("genre").trim().escape().optional(),
+      .notEmpty()
+      .withMessage("Species is not specified!")
+      .isLength({ min: 2 })
+      .withMessage("Species is too short!")
   ],
 };

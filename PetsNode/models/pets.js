@@ -29,9 +29,9 @@ module.exports = {
     const q = "DELETE FROM pets WHERE id = ?";
     return await db.query(q, [id]);
   },
-  createSpecies: async function (db, data) {
+  createSpecies: async function (db, specieName) {
     const q = "INSERT INTO species (name) VALUES (?)";
-    const [result] = await db.query(q, [data.name]);
+    const [result] = await db.query(q, [specieName]);
     if (result) {
       return result.insertId;
     } else {
@@ -84,7 +84,7 @@ module.exports = {
     JOIN species ON species.ID = pets.species_ID 
     WHERE pets.ID = ?;`;
     const [results, fields] = await db.query(q, [petID]);
-    return results[0].name;
+    return results[0];
   },
   getRandomID: async function (db) {
     const q = `SELECT ID FROM pets ORDER BY RAND() LIMIT 2;`;

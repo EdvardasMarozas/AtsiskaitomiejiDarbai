@@ -1,63 +1,65 @@
-const { name } = require("ejs");
 const _pets = require("../models/pets");
-var htmlspecialchars = require("htmlspecialchars");
+// var htmlspecialchars = require("htmlspecialchars");
 var fs = require("node:fs/promises");
 
-function validateText(txt, default_txt = "") {
-  if (txt == undefined) {
-    return default_txt;
-  } else {
-    return htmlspecialchars(txt.toString().trim());
-  }
-}
+const {validationResult} = require("express-validator");
+const {petValidateStore, petValidateUpdate} = require("../requests/PetsRequest");
 
-function petValidate(req, pet = {}, specie = {}) {
-  let valid = true;
-  const messages = [];
+// function validateText(txt, default_txt = "") {
+//   if (txt == undefined) {
+//     return default_txt;
+//   } else {
+//     return htmlspecialchars(txt.toString().trim());
+//   }
+// }
 
-  if (pet) {
-    pet.name = validateText(req.body.name, pet.name);
-    pet.email = validateText(req.body.email, pet.email);
-  } else {
-    pet.name = validateText(req.body.name);
-    pet.name = validateText(req.body.email);
-  }
-  if (specie) {
-    specie.name = validateText(req.body.species, specie.name);
-  } else {
-    specie.name = validateText(req.body.species);
-  }
+// function petValidate(req, pet = {}, specie = {}) {
+//   let valid = true;
+//   const messages = [];
 
-  if (!pet.name) {
-    messages.push("Name is not specified");
-    valid = false;
-  }
-  if (!pet.email) {
-    messages.push("Email is not specified");
-    valid = false;
-  }
-  if (!specie.name) {
-    messages.push("Species is not specified");
-    valid = false;
-  }
+//   if (pet) {
+//     pet.name = validateText(req.body.name, pet.name);
+//     pet.email = validateText(req.body.email, pet.email);
+//   } else {
+//     pet.name = validateText(req.body.name);
+//     pet.name = validateText(req.body.email);
+//   }
+//   if (specie) {
+//     specie.name = validateText(req.body.species, specie.name);
+//   } else {
+//     specie.name = validateText(req.body.species);
+//   }
 
-  if (req.file) {
-    const mimetypes = ["image/webp", "image/png", "image/jpeg"];
-    if (!mimetypes.includes(req.file.mimetype)) {
-      messages.push("Accepted file types: jpg, png, jpeg, webp");
-      valid = false;
-    }
+//   if (!pet.name) {
+//     messages.push("Name is not specified");
+//     valid = false;
+//   }
+//   if (!pet.email) {
+//     messages.push("Email is not specified");
+//     valid = false;
+//   }
+//   if (!specie.name) {
+//     messages.push("Species is not specified");
+//     valid = false;
+//   }
 
-    if (req.file.size > 2 * 1024 * 1024) {
-      messages.push("Max. file size: 2 MB.");
-      valid = false;
-    }
+//   if (req.file) {
+//     const mimetypes = ["image/webp", "image/png", "image/jpeg"];
+//     if (!mimetypes.includes(req.file.mimetype)) {
+//       messages.push("Accepted file types: jpg, png, jpeg, webp");
+//       valid = false;
+//     }
 
-    pet.image = validateText(req.file.originalname);
-  }
+//     if (req.file.size > 2 * 1024 * 1024) {
+//       messages.push("Max. file size: 2 MB.");
+//       valid = false;
+//     }
 
-  return [pet, specie, valid, messages];
-}
+//     pet.image = validateText(req.file.originalname);
+//   }
+
+//   return [pet, specie, valid, messages];
+// }
 
 module.exports = {
   showAll: async function (req, res, next) {
@@ -71,26 +73,36 @@ module.exports = {
     }
   },
   showbyID: async function (req, res, next) {
-    let ID = req.params.id;
-    try {
-      const [pet, fields] = await _pets.getById(req.db, ID);
-      let d = pet.created_at;
-      const created_at = d.toString().split(" ", 4).join(" ");
-      const [totalBattles] = await _pets.totalBattles(req.db, pet.ID);
-      const [battlesWon] = await _pets.battlesWon(req.db, pet.ID);
-      const [battlesDrawn] = await _pets.battlesDrawn(req.db, pet.ID)
+    const validation = validationResult(req);
 
-      res.render("Pets/showbyid", {
-        title: "Pet - " + ID,
-        pet: pet,
-        created_at: created_at,
-        totalBattles: totalBattles,
-        battlesWon: battlesWon,
-        battlesDrawn: battlesDrawn
-      });
-    } catch (err) {
-      console.log(err);
-      res.status(500).send("Server failure");
+    if(validation.isEmpty()) {
+      let ID = req.params.id;
+      try {
+        const [pet, fields] = await _pets.getById(req.db, ID);
+        if (pet) {
+        let d = pet.created_at;
+        const created_at = d.toString().split(" ", 4).join(" ");
+        const [totalBattles] = await _pets.totalBattles(req.db, pet.ID);
+        const [battlesWon] = await _pets.battlesWon(req.db, pet.ID);
+        const [battlesDrawn] = await _pets.battlesDrawn(req.db, pet.ID);
+        
+        res.render("Pets/showbyid", {
+          title: "Pet - " + ID,
+          pet: pet,
+          created_at: created_at,
+          totalBattles: totalBattles,
+          battlesWon: battlesWon,
+          battlesDrawn: battlesDrawn
+        });
+      } else {
+        res.status(404).send("Not Found");
+      }
+      } catch (err) {
+        console.log(err);
+        res.status(500).send("Server failure");
+      }
+    } else {
+      res.status(404).send("Wrong Pet")
     }
   },
   create: function (req, res, next) {
@@ -101,18 +113,18 @@ module.exports = {
     res.render("pets/create", { old: old, messages: messages });
   },
   store: async function (req, res, next) {
-    const [pet, specie, valid, messages] = petValidate(req);
+    const [pet, valid, messages] = petValidateStore(req);
     if (valid) {
       try {
+        console.log(pet.species)
         await _pets.diableKeyCheck(req.db);
         const petID = await _pets.create(req.db, pet);
-        await _pets.createSpecies(req.db, specie);
-        const [specieID, fields] = await _pets.newestSpeciesID(req.db);
+        const specieID = await _pets.createSpecies(req.db, pet.species);
         await _pets.updateNewPetSpecie(req.db, specieID, petID);
-        await _pets.updateAllPetSpecies(req.db, specieID, specie.name);
-        await _pets.deleteSpiece(req.db, specie.name, specieID)
+        await _pets.updateAllPetSpecies(req.db, specieID, pet.species);
+        await _pets.deleteSpiece(req.db, pet.species, specieID)
         await _pets.enableKeyCheck(req.db);
-        console.log(specie.name)
+        console.log(pet.species)
         if (req.file) {
           const ext = {
             "image/webp": ".webp",
@@ -163,13 +175,15 @@ module.exports = {
         delete req.session.old;
         delete req.session.messages;
         const petSpecie = await _pets.getSpecie(req.db, ID);
-        
+        let specieName;
+        petSpecie ? specieName = petSpecie.name : specieName = '';
+
         res.render("Pets/edit", {
           title: "Pet edit page",
           pet: pet,
           old: old,
           messages: messages,
-          specie: petSpecie
+          specie: specieName
         });
       } else {
         res.status(404).send("Not Found");
@@ -181,10 +195,11 @@ module.exports = {
   },
   update: async function (req, res, next) {
     let ID = req.params.id;
+    let admin_ID = req.params.IDI 
     try {
       const [pet] = await _pets.getById(req.db, ID);
       if (pet) {
-        const [pet_validated, specie, valid, messages] = petValidate(req, pet);
+        const [pet_validated, specie, valid, messages] = petValidateUpdate(req, pet);
 
           if (valid) {
           await _pets.update(req.db, ID, pet_validated);
@@ -208,7 +223,7 @@ module.exports = {
           if (req.file) {
             fs.rm(req.file.path);
           }
-          res.redirect(req.header("Referer") ?? `/petwars/pets/${ID}/edit`);
+          res.redirect(req.header("Referer") ?? `/panel/${admin_ID}/${ID}/edit`);
         }
       } else {
         res.status(404).send("Not Found");

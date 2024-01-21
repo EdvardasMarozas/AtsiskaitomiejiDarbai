@@ -1,11 +1,11 @@
 <%- include("../layout/header", {title: "add a pet"}) %>
 
 <div class="container mx-auto" style="width: 23%;">
-    <h1 class="text-center">Add a Pet</h1>
+    <h1 class="text-center" style="color: #ff9a3c;">Add a Pet</h1>
 
     <% if (messages) { %>
       <% for (let message of messages) { %>
-        <div class="alert alert-warning" role="alert">
+        <div class="alert text-center" style="background-color: #ff703c79; font-weight: 900; color: #ffc93c;" role="alert">
           <%= message %>
         </div>
       <% } %>

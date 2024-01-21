@@ -48,8 +48,8 @@ app.use(
 
 var indexRouter = require('./routes/index');
 app.use("/", indexRouter);
-var usersRouter = require('./routes/users');
-app.use("/users", usersRouter);
+var AdminRouter = require('./routes/AdminRouter');
+app.use("/", AdminRouter);
 var petsRouter = require('./routes/PetsRouter');
 app.use("/petwars/", petsRouter);
 

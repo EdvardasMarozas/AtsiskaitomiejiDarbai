@@ -11,9 +11,9 @@
       <h5 class="card-title">Battle stats: (out of <%= totalBattles %> battles)</h5>
     </div>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item">Won: <%= battlesWon%> (<%= (battlesWon*100/totalBattles).toFixed(0) %>%)</li>
-      <li class="list-group-item">Lost: <%= (totalBattles - battlesWon - battlesDrawn) %> (<%= ((totalBattles - battlesWon - battlesDrawn)*100/totalBattles).toFixed(0) %>%)</li>
-      <li class="list-group-item">Drawn: <%= battlesDrawn %> (<%= (battlesDrawn*100/totalBattles).toFixed(0) %>%)</li>
+      <li class="list-group-item">Won: <%= battlesWon%> (<%= totalBattles == 0 ? 0 : (battlesWon*100/totalBattles).toFixed(0) %>%)</li>
+      <li class="list-group-item">Lost: <%= (totalBattles - battlesWon - battlesDrawn) %> (<%= totalBattles == 0 ? 0 : ((totalBattles - battlesWon - battlesDrawn)*100/totalBattles).toFixed(0) %>%)</li>
+      <li class="list-group-item">Drawn: <%= battlesDrawn %> (<%= totalBattles == 0 ? 0 : (battlesDrawn*100/totalBattles).toFixed(0) %>%)</li>
     </ul>
     <div class="card-body">
       <a href="/petwars" class="card-link">Start a new battle</a>
