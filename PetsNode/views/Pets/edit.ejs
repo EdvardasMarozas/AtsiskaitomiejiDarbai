@@ -1,4 +1,4 @@
-<%- include("../layout/header", {title: title + " - " + pets.name}) %>
+<%- include("../layout/header", {title: title + " - " + pet.name}) %>
 
 <div class="container mx-auto" style="width: 23%;">
     <h1 class="text-center">Update Pet</h1>
@@ -10,21 +10,29 @@
         </div>
       <% } %>
     <% } %>
-
-    <form action="/petwars" method="post" enctype="multipart/form-data">
+        
+    <div class="text-center">
+      <img src="images/<%= pet.image%>" style="max-height: 250px" alt="pet image">
+    </div>
+    
+    <form action="/petwars/adminpanel/<%= pet.ID %>" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="_method" value="PUT">
         <div class="mb-3">
             <label for="imageInput" class="form-label">Photo</label>
             <input style="background: rgba(255,255,255,0.5)" type="file" class="form-control" name="image" id="imageInput" placeholder="">
           </div>
         <div class="mb-3">
           <label for="nameInput" class="form-label">Pet name</label>
-          <input style="background: rgba(255,255,255,0.5)" type="text" class="form-control" name="name" id="nameInput" value="<%= old ? old.name : pets.name %>" placeholder="" >
+          <input style="background: rgba(255,255,255,0.5)" type="text" class="form-control" name="name" id="nameInput" value="<%= old ? old.name : pet.name %>" placeholder="" >
         </div>
         <div class="mb-3">
           <label for="emailInput" class="form-label">Email</label>
-          <input style="background: rgba(255,255,255,0.5)" type="email" class="form-control" name="email" id="emailInput" value="<%= old ? old.email : pets.email %>" placeholder="" >
+          <input style="background: rgba(255,255,255,0.5)" type="email" class="form-control" name="email" id="emailInput" value="<%= old ? old.email : pet.email %>" placeholder="" >
         </div>
-    
+        <div class="mb-3">
+          <label for="speciesInput" class="form-label">species</label>
+          <input style="background: rgba(255,255,255,0.5)" type="text" class="form-control" name="species" id="speciesInput" value="<%= old ? old.species : specie %>" placeholder="" >
+        </div>
         <div class="d-flex justify-content-evenly"><button type="submit" class="btn btn-outline-warning pr-5">UPDATE</button> <a class="btn btn-outline-warning" href="/petwars/adminpanel"> GO BACK</a></div>
       </form>
 </div>

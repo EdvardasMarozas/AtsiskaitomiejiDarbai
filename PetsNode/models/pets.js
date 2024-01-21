@@ -38,41 +38,53 @@ module.exports = {
       return false;
     }
   },
-  // updateAllPets: async function (db, spiecesID, petID) {
-  //   const q = `UPDATE pets SET species_ID= ? WHERE ID = ?;`
-  //   return await db.query(q, [spiecesID, petID]);
-  // },
+  updateNewPetSpecie: async function (db, spiecesID, petID) {
+    const q = `UPDATE pets SET species_ID= ? WHERE ID = ?;`;
+    return await db.query(q, [spiecesID, petID]);
+  },
+  updateSpecie: async function (db, specieName, petID) {
+    const q = `UPDATE species SET name = ?
+    WHERE ID = (SELECT species.ID FROM species 
+    JOIN pets ON pets.species_ID = species.ID 
+    WHERE pets.ID = ?);`;
+    return await db.query(q, [specieName, petID]);
+  },
   // updatePetSpecies: async function (db, specieName, specieID, petID) {
-  //   const q = `UPDATE pets SET pets.species_ID = 
+  //   const q = `UPDATE pets SET pets.species_ID =
   //   (SELECT species.ID FROM species WHERE species.name = ? AND species.ID = ?)
   //    WHERE pets.ID = ?;`;
   //   return await db.query(q, [specieName, specieID,  petID]);
   // },
-  updatePetSpecies: async function (db, specieName, specieID, petID) {
-    const q = `UPDATE pets SET pets.species_ID =
-     (SELECT species.ID FROM species WHERE species.ID = 8)
+  updateAllPetSpecies: async function (db, specieID, specieName) {
+    const q = `UPDATE pets SET pets.species_ID = ?
       WHERE pets.ID IN (SELECT pets.ID FROM pets JOIN
       species ON species.ID = pets.species_ID WHERE
-      species.name = 'fox');`;
-    return await db.query(q, [specieName, specieID,  petID]);
+      species.name = ?);`;
+    return await db.query(q, [specieID, specieName]);
   },
   newestSpeciesID: async function (db) {
     const q = `SELECT ID FROM species ORDER BY species.ID DESC LIMIT 1;`;
     const [results, fields] = await db.query(q);
     return [results[0].ID, fields];
   },
-  deleteSpiece: async function (db, name) {
-    const q = `SELECT * FROM species WHERE name = ?
-    ORDER BY ID ASC LIMIT 1;`;
-    return await db.query(q, [name]);
+  deleteSpiece: async function (db, name, specieID) {
+    const q = `DELETE FROM species WHERE name = ? AND ID <> ?;`;
+    return await db.query(q, [name, specieID]);
   },
   diableKeyCheck: async function (db) {
-    q = `SET FOREIGN_KEY_CHECKS=0;`;
+    const q = `SET FOREIGN_KEY_CHECKS=0;`;
     return await db.query(q);
   },
   enableKeyCheck: async function (db) {
-    q = `SET FOREIGN_KEY_CHECKS=1;`;
+    const q = `SET FOREIGN_KEY_CHECKS=1;`;
     return await db.query(q);
+  },
+  getSpecie: async function (db, petID) {
+    const q = `SELECT species.name FROM pets 
+    JOIN species ON species.ID = pets.species_ID 
+    WHERE pets.ID = ?;`;
+    const [results, fields] = await db.query(q, [petID]);
+    return results[0].name;
   },
   getRandomID: async function (db) {
     const q = `SELECT ID FROM pets ORDER BY RAND() LIMIT 2;`;
@@ -93,22 +105,22 @@ module.exports = {
     FROM votes WHERE result = ?)*100/((SELECT COUNT(*) 
     FROM votes WHERE result = ?) + 
     (SELECT COUNT(*) FROM votes WHERE result = ?)), 0)) AS answer FROM votes;`;
-    const [results, fields] = await db.query(q, [pet1ID, pet1ID, pet2ID])
+    const [results, fields] = await db.query(q, [pet1ID, pet1ID, pet2ID]);
     return [results[0].answer, fields];
   },
-  totalBattles: async function(db, petID){
+  totalBattles: async function (db, petID) {
     const q = `SELECT COUNT(*) as answer FROM votes WHERE (pets1_ID = ? OR pets2_ID = ?);`;
-    const [results, fields] = await db.query(q, [petID, petID])
-    return [results[0].answer, fields]
+    const [results, fields] = await db.query(q, [petID, petID]);
+    return [results[0].answer, fields];
   },
-  battlesWon: async function(db, petID){
+  battlesWon: async function (db, petID) {
     const q = `SELECT COUNT(*) as answer FROM votes WHERE (pets1_ID = ? OR pets2_ID = ?) AND result = ?;`;
-    const [results, fields] = await db.query(q, [petID, petID, petID])
-    return [results[0].answer, fields]
+    const [results, fields] = await db.query(q, [petID, petID, petID]);
+    return [results[0].answer, fields];
   },
-  battlesDrawn: async function(db, petID){
+  battlesDrawn: async function (db, petID) {
     const q = `SELECT COUNT(*) as answer FROM votes WHERE (pets1_ID = ? OR pets2_ID = ?) AND result = 'draw';`;
-    const [results, fields] = await db.query(q, [petID, petID])
-    return [results[0].answer, fields]
+    const [results, fields] = await db.query(q, [petID, petID]);
+    return [results[0].answer, fields];
   },
 };

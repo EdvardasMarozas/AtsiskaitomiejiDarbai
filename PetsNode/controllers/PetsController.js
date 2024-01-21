@@ -54,9 +54,6 @@ function petValidate(req, pet = {}, specie = {}) {
     }
 
     pet.image = validateText(req.file.originalname);
-  } else {
-    messages.push("Photo is not given");
-    valid = false;
   }
 
   return [pet, specie, valid, messages];
@@ -111,8 +108,9 @@ module.exports = {
         const petID = await _pets.create(req.db, pet);
         await _pets.createSpecies(req.db, specie);
         const [specieID, fields] = await _pets.newestSpeciesID(req.db);
-        await _pets.updatePetSpecies(req.db, specie.name, specieID, petID);
-        // await _pets.deleteSpiece(req.db, specie.name)
+        await _pets.updateNewPetSpecie(req.db, specieID, petID);
+        await _pets.updateAllPetSpecies(req.db, specieID, specie.name);
+        await _pets.deleteSpiece(req.db, specie.name, specieID)
         await _pets.enableKeyCheck(req.db);
         console.log(specie.name)
         if (req.file) {
@@ -164,12 +162,14 @@ module.exports = {
         const messages = req.session.messages;
         delete req.session.old;
         delete req.session.messages;
-
+        const petSpecie = await _pets.getSpecie(req.db, ID);
+        
         res.render("Pets/edit", {
           title: "Pet edit page",
-          pets: pet,
+          pet: pet,
           old: old,
           messages: messages,
+          specie: petSpecie
         });
       } else {
         res.status(404).send("Not Found");
@@ -184,11 +184,11 @@ module.exports = {
     try {
       const [pet] = await _pets.getById(req.db, ID);
       if (pet) {
-        const [pet_validated, specie, valid, messages] = petValidate(req, _pets);
+        const [pet_validated, specie, valid, messages] = petValidate(req, pet);
 
-        if (valid) {
+          if (valid) {
           await _pets.update(req.db, ID, pet_validated);
-          await _pets.updateSpecies();
+          await _pets.updateSpecie(req.db, specie.name, ID);
 
           if (req.file) {
             const ext = {
