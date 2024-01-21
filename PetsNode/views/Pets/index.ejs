@@ -1,95 +1,101 @@
-<%- include("../layout/header") %>
-<div class="container">
-  <div>
-    <h1 class="text-center">Pet Wars</h1>
+<%- include("../layout/mainheader") %>
+<div>
+  <ul class="d-flex justify-content-end" id="nav1" style="list-style-type:none">
+    <li style="margin-right: auto;"><img src="images/../header/petwarslogo.png" style="height: 200px" alt="petwarslogo"></li>
+  <div class="list1 d-flex flex-column text-left">
+    <li><a class="" href="/petwars/adminpanel">Login</a></li>
+    <li><a class="" href="/petwars/pets"> Pet list</a></li>
+    <li><a class="" href="/petwars/adminpanel">Update & Delete</a></li>
+    <li><a class="" href="/petwars/create">Add your pet</a></li>
+    <!-- <li><a class="btn btn-outline-warning" href="/petwars/create"><i class="bi bi-plus-circle"></i> Add your pet</a></li> -->
   </div>
-
-  <p>
-    <a class="btn btn-outline-warning" href="/petwars/create">
-      <i class="bi bi-plus-circle"></i> Add your pet</a
-    >
-  </p>
-  <p>
-    <a class="btn btn-outline-warning" href="/petwars/pets"> Pet list</a>
-  </p>
-  <p>
-    <a class="btn btn-outline-warning" href="/petwars/adminpanel"
-      >Update & Delete</a
-    >
-  </p>
-
+  </ul>
+</div>
+<div class="container">
   <% if (oldPet1) { %>
-  <div class="alert alert-warning" role="alert">
+  <div class="" style="position: relative; bottom: 15em;" role="alert">
     <div class="result">
-      <h2 class="text-center">Results</h2>
+      <h1 class="text-center text-success">Results</h1>
       <div class="d-flex justify-content-center gap-5">
         <div class="pr-5">
           <form action="/petwars/" method="post">
             <input type="hidden" name="_method" value="PUT" />
-            <a href="/petwars/pets/<%=  %>"
+            <a href="/petwars/pets/<%= winner ? winner.ID : oldPet1.ID %>"
               ><img
-                src="images/<%= oldPet1.image%>"
-                style="height: 300px"
-                class="pr-5 img-thumbnail"
+                src="images/<%= winner ? winner.image : oldPet1.image%>"
+                style="height: 150px"
+                class="pr-5"
             /></a>
           </form>
         </div>
         <div class="pl-5">
           <form action="/petwars/" method="post">
             <input type="hidden" name="_method" value="PUT" />
-            <a href="/petwars/pets/<%=  %>"
+            <a href="/petwars/pets/<%= loser ? loser.ID : oldPet2.ID %>"
               ><img
-                src="images/<%= oldPet2.image%>"
-                style="height: 300px"
-                class="pr-5 img-thumbnail"
+                src="images/<%= loser ? loser.image : oldPet2.image%>"
+                style="height: 150px"
+                class="pr-5"
             /></a>
           </form>
         </div>
       </div>
-        <p class="text-center">
-          <%= %> of people picked
+        <p class="text-center fs-3 text-info" >
+          <%= stat %> % of people picked
           <br />
-          <a href="/petwars/pets/<%= oldPet1.ID %>"><%= oldPet1.name %></a> over
-          <a href="/petwars/pets/<%= oldPet2.ID %>"><%= oldPet2.name %>.</a>
+          <a href="/petwars/pets/<%= winner ? winner.ID : oldPet1.ID %>"><%= winner ? winner.name : oldPet1.name %></a> over
+          <a href="/petwars/pets/<%= loser ? loser.ID : oldPet2.ID %>"><%= loser ? loser.name : oldPet2.name %>.</a>
         </p>
-        <h2 class="text-center">Next PetBattle!</h2>
+        <h1 class="text-center text-danger">Next PetBattle!</h1>
       <% } %>
 
-      <div class="text-center mb-5 fs-5">
-        <%= pet1.name %><span> VS </span><%= pet2.name %>
+      <div class="d-flex justify-content-evenly gap-5 fs-4 mb-2 fw-medium">
+        <div class="text-warning text-center">SOLDIER 01</div>
+        <div></div>
+        <div></div>
+        <div class="text-warning text-center">SOLDIER 02</div>
       </div>
-      <div class="d-flex justify-content-center gap-5">
-        <div class="pr-5">
+      <div class="d-flex justify-content-evenly gap-5 fw-medium">
+        <div class="polaroid pr-5">
           <form action="/petwars/" method="post">
             <input type="hidden" name="winner" value="<%= pet1.ID %>">
             <input type="hidden" name="loser" value="<%= pet2.ID %>">
-            <a class="post_link" href="http://localhost:3000/petwars"
+            <a class="post_link" href="/petwars"
               ><img
                 id="<%= pet1.ID %>"
                 src="images/<%= pet1.image%>"
                 style="height: 300px"
-                class="pr-5 img-thumbnail"
-            /></a>
+                class="pr-5"
+            /></a><div class="conter">
+              <p><span class="fs-1 text-primary"><%= pet1.name %><span></p>
+            </div>
           </form>
         </div>
-        <div class="pl-5">
+
+        <div class="align-self-center">
+          <img src="images/../header/vs4.png" style="height: 250px; padding-bottom: 5em;" alt="VS">
+        </div>
+
+        <div class="polaroid pl-5">
           <form action="/petwars/" method="post">
             <input type="hidden" name="winner" value="<%= pet2.ID %>">
             <input type="hidden" name="loser" value="<%= pet1.ID %>">
-            <a class="post_link" href="http://localhost:3000/petwars"
+            <a class="post_link" href="/petwars"
               ><img
                 id="<%= pet2.ID %>"
                 src="images/<%= pet2.image%>"
-                style="height: 300px"
-                class="mr-5 img-thumbnail"
-            /></a>
+                style="height: 300px;"
+                class="mr-5"
+            /></a><div class="conter">
+              <p><span class="fs-1 text-primary"><%= pet2.name %></span></p>
+            </div>
           </form>
         </div>
       </div>
 
-      <div class="text-center mt-5"><h2>Who looks more awesome?</h2></div>
-      <div class="text-center">
-        Can't decide <a href="/petwars/">refresh</a> the page for a draw
+      <div class="text-center mt-3 text-success fs-3"><h2>WHO WINS?! YOU DECIDE!!!</h2></div>
+      <div class="text-center text-light fs-5">
+        Can't decide? Just <a href="/petwars">refresh</a> the page for a draw.
       </div>
     </div>
   </div>

@@ -1,0 +1,37 @@
+body {
+  background-image: url("../header/petwars2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-y:-3em;
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#nav1 li {
+  margin-inline: 0.5%;
+}
+div.polaroid {
+  width: fit-content;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+}
+
+div.conter {
+  padding: 10px;
+}
+div.list1 li{
+  width: 100%;
+  margin-block: 8%;
+}
+div.list1 li a{
+  font-size: large;
+  color: black;
+  text-decoration: none;
+}
+div.list1 li a:hover{
+  text-decoration: underline;
+}

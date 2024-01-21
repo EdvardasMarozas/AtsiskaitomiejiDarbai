@@ -67,7 +67,7 @@ module.exports = {
     try {
       const [pets, fields] = await _pets.getAll(req.db);
 
-      res.render("Pets/allPets", { title: "Pet list", pets: pets });
+      res.render("Pets/allPets", { title: "Our Soldiers", pets: pets });
     } catch (err) {
       console.log(err);
       res.status(500).send("Server failure");
@@ -79,11 +79,17 @@ module.exports = {
       const [pet, fields] = await _pets.getById(req.db, ID);
       let d = pet.created_at;
       const created_at = d.toString().split(" ", 4).join(" ");
+      const [totalBattles] = await _pets.totalBattles(req.db, pet.ID);
+      const [battlesWon] = await _pets.battlesWon(req.db, pet.ID);
+      const [battlesDrawn] = await _pets.battlesDrawn(req.db, pet.ID)
 
       res.render("Pets/showbyid", {
         title: "Pet - " + ID,
         pet: pet,
         created_at: created_at,
+        totalBattles: totalBattles,
+        battlesWon: battlesWon,
+        battlesDrawn: battlesDrawn
       });
     } catch (err) {
       console.log(err);
@@ -103,10 +109,10 @@ module.exports = {
       try {
         await _pets.diableKeyCheck(req.db);
         const petID = await _pets.create(req.db, pet);
-        await _pets.deleteSpiece(req.db, specie.name)
         await _pets.createSpecies(req.db, specie);
         const [specieID, fields] = await _pets.newestSpeciesID(req.db);
-        await _pets.updateSpecies(req.db, specieID, petID);
+        await _pets.updatePetSpecies(req.db, specie.name, specieID, petID);
+        // await _pets.deleteSpiece(req.db, specie.name)
         await _pets.enableKeyCheck(req.db);
         console.log(specie.name)
         if (req.file) {
@@ -141,7 +147,7 @@ module.exports = {
     try {
       const [pets, fields] = await _pets.getAll(req.db);
 
-      res.render("Pets/adminpanel", { title: "Pet list", pets: pets });
+      res.render("Pets/adminpanel", { title: "Pet List", pets: pets });
     } catch (err) {
       console.log(err);
       res.status(500).send("Server error");
@@ -178,10 +184,11 @@ module.exports = {
     try {
       const [pet] = await _pets.getById(req.db, ID);
       if (pet) {
-        const [pet_validated, valid, messages] = petValidate(req, _pets);
+        const [pet_validated, specie, valid, messages] = petValidate(req, _pets);
 
         if (valid) {
-          const result = await _pets.update(req.db, ID, pet_validated);
+          await _pets.update(req.db, ID, pet_validated);
+          await _pets.updateSpecies();
 
           if (req.file) {
             const ext = {
@@ -196,7 +203,7 @@ module.exports = {
           }
           res.redirect("/petwars/pets/" + ID);
         } else {
-          req.session.old = book;
+          req.session.old = pet;
           req.session.messages = messages;
           if (req.file) {
             fs.rm(req.file.path);
@@ -234,23 +241,42 @@ module.exports = {
       const [pet1, fields] = await _pets.getById(req.db, nr1);
       const [pet2] = await _pets.getById(req.db, nr2);
       if (req.header("Referer") == "http://localhost:3000/petwars" | req.header("Referer") == "http://localhost:3000/petwars/") {
+        // if  pet1 = false and pet2 = false pbandyti reikes
+        console.log('tikrinam123');
+        console.log(req.session.winner);
+        const [battleStats] = await _pets.battleStats(req.db, pet1.ID, pet2.ID);
+        const winnerID = req.session.winner;
+        const loserID = req.session.loser;
+        const [winner, fields] = await _pets.getById(req.db, winnerID);
+        const [loser] = await _pets.getById(req.db, loserID);
         const oldPet1 = req.session.oldPet1;
         const oldPet2 = req.session.oldPet2;
+        if (req.session.winner == undefined) await _pets.createBattle(req.db, oldPet1.ID, oldPet2.ID, `draw`);
         delete req.session.oldPet1;
         delete req.session.oldPet2;
+        delete req.session.winner;
+        delete req.session.loser;
         req.session.oldPet1 = pet1;
         req.session.oldPet2 = pet2;
+        // console.log(oldPet1.ID)
+        // console.log(oldPet2.ID)
+        // console.log("tarpas")
+        // console.log(winner)
+        // console.log(loser)
         res.render("Pets/index", {
           title: "Petwars",
           oldPet1: oldPet1,
           oldPet2: oldPet2,
           pet1: pet1,
           pet2: pet2,
+          stat: battleStats,
+          winner: winner,
+          loser: loser
         });
       } else {
         req.session.oldPet1 = pet1;
         req.session.oldPet2 = pet2;
-        res.render("Pets/index", { title: "Petwars", pet1: pet1, pet2: pet2, oldPet1: false, oldPet2: false});
+        res.render("Pets/index", { title: "Petwars", pet1: pet1, pet2: pet2, oldPet1: false, oldPet2: false, winner: false});
       }
     } catch (err) {
       console.log(err);
@@ -259,12 +285,12 @@ module.exports = {
   },
   result: async function (req, res, next) {
     try {
-      await _pets.createBattle(req.db, req.body.winner, req.body.loser, `winner - ${req.body.winner}`)
-      console.log("cia2")
-      console.log(req.body)
-      // if(req.header("/petwars")){
-      //   res.render("Pets/result", {})
-      // }
+      req.session.winner = req.body.winner;
+      req.session.loser = req.body.loser;
+      await _pets.createBattle(req.db, req.body.winner, req.body.loser, req.body.winner)
+      if(req.header("/petwars")){
+        console.log("veikia")
+      }
       res.redirect('/petwars')
       // res.render("Pets/index", { title: "Petwars", pet1: pet1, pet2: pet2, pets: twoPets, oldPet1: false, oldPet2: false});
       // res.redirect(req.header("Referer") ?? `/petwars/pets/${ID}/edit`);

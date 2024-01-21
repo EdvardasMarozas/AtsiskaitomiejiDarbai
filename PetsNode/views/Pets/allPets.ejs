@@ -1,31 +1,29 @@
 <%- include("../layout/header") %>
-
-<div class="container">
-  <h1><%= title %></h1>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Image</th>
-        <th scope="col">Name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% for (let i in pets) { %>
-      <tr>
-        <th scope="row"><%= pets[i].ID %></th>
-        <td>
-          <img src="images/<%= pets[i].image%>" style="max-height: 40px" />
-        </td>
-        <td><a href="/petwars/pets/<%= pets[i].ID %>"><%= pets[i].name %></a></td>
-      </tr>
-      <% } %>
-    </tbody>
-  </table>
-
-  <p>
-    <a class="btn btn-outline-secondary btn-sm" href="/petwars"> GO BACK</a>
-  </p>
-
-  <%- include("../layout/footer") %>
+<a class="btn btn-outline-secondary btn-sm" href="/petwars"> GO BACK</a>
+<h1 class="text-center"><%= title %></h1>
+<div class="container" style="column-width: 200px">
+  <% for (let i = 0, a = 1; i < pets.length; i++, a++) { %>
+  <div
+    style="
+      display: flex;
+      flex-direction: column;
+      break-inside: avoid;
+      width: 71%;
+    "
+  >
+    <a style="width: 100%" href="/petwars/pets/<%= pets[i].ID %>">
+      <img
+        class="my-2"
+        src="images/<%= pets[i].image%>"
+        style="max-height: 150px"
+      />
+    </a>
+    <a
+      style="width: 100%; text-align: center; font-weight: 900"
+      class="mb-4"
+      href="/petwars/pets/<%= pets[i].ID %>"
+      ><span style="color: #5585b5"><%= a %>.</span>
+       <span style="color: #53a8b6;"><%= pets[i].name %></a> </span>
+  </div>
+  <% } %> <%- include("../layout/footer") %>
 </div>

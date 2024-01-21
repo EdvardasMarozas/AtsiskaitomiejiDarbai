@@ -1,7 +1,7 @@
 <%- include("../layout/header", {title: title + " - " + pets.name}) %>
 
-<div class="container">
-    <h1>Add a Pet</h1>
+<div class="container mx-auto" style="width: 23%;">
+    <h1 class="text-center">Update Pet</h1>
 
     <% if (messages) { %>
       <% for (let message of messages) { %>
@@ -14,18 +14,18 @@
     <form action="/petwars" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="imageInput" class="form-label">Photo</label>
-            <input type="file" class="form-control" name="image" id="imageInput" placeholder="">
+            <input style="background: rgba(255,255,255,0.5)" type="file" class="form-control" name="image" id="imageInput" placeholder="">
           </div>
         <div class="mb-3">
           <label for="nameInput" class="form-label">Pet name</label>
-          <input type="text" class="form-control" name="name" id="nameInput" value="<%= old ? old.name : pets.name %>" placeholder="" >
+          <input style="background: rgba(255,255,255,0.5)" type="text" class="form-control" name="name" id="nameInput" value="<%= old ? old.name : pets.name %>" placeholder="" >
         </div>
         <div class="mb-3">
-          <label for="emailInput" class="form-label">Your Email</label>
-          <input type="email" class="form-control" name="email" id="emailInput" value="<%= old ? old.email : pets.email %>" placeholder="" >
+          <label for="emailInput" class="form-label">Email</label>
+          <input style="background: rgba(255,255,255,0.5)" type="email" class="form-control" name="email" id="emailInput" value="<%= old ? old.email : pets.email %>" placeholder="" >
         </div>
     
-        <button type="submit" class="btn btn-outline-warning"><i class="bi bi-plus-circle"></i> ADD</button> <a class="btn btn-outline-warning" href="/petwars/adminpanel"> GO BACK</a>
+        <div class="d-flex justify-content-evenly"><button type="submit" class="btn btn-outline-warning pr-5">UPDATE</button> <a class="btn btn-outline-warning" href="/petwars/adminpanel"> GO BACK</a></div>
       </form>
 </div>
 

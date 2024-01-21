@@ -51,7 +51,7 @@ app.use("/", indexRouter);
 var usersRouter = require('./routes/users');
 app.use("/users", usersRouter);
 var petsRouter = require('./routes/PetsRouter');
-app.use("/petwars", petsRouter);
+app.use("/petwars/", petsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

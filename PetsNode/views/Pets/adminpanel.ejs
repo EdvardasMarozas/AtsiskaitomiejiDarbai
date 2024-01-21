@@ -1,40 +1,31 @@
+<a class="btn btn-outline-secondary btn-sm" href="/petwars"> GO BACK</a>
+<h1 class="text-center"><%= title %></h1>
 <%- include("../layout/header") %>
 
-<div class="container">
-  <h1><%= title %></h1>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Image</th>
-        <th scope="col">Name</th>
-        <th scope="col" class="text-end">Control</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% for (let i in pets) { %>
-      <tr>
-        <th scope="row"><%= pets[i].ID %></th>
-        <td>
-          <img src="images/<%= pets[i].image%>" style="max-height: 40px" />
-        </td>
-        <td><a href="/petwars/adminpanel/<%= pets[i].ID %>"><%= pets[i].name %></a></td>
-        <td class="d-flex justify-content-end gap-2 pb-4">
-            <a class="btn btn-outline-primary btn-sm" href="/petwars/adminpanel/<%= pets[i].ID %>/edit"><i class="bi bi-pencil-square"></i> EDIT</a> 
+<div class="container" style="column-width: 150px">
+     <% for (let i = 0, a = 1; i < pets.length; i++, a++) { %>
+        <div style="display: flex; flex-direction: column; break-inside: avoid; width: 71%;">
+        <div class="d-flex flex-row">
+          <div>
+          <a class="btn btn-outline-dark" href="/petwars/adminpanel/<%= pets[i].ID %>/edit"><i class="bi bi-pencil-square"></i> EDIT</a>
+          </div>
+          <div>
             <form action="/petwars/adminpanel/<%= pets[i].ID %>" method="post">
               <input type="hidden" name="_method" value="DELETE">
-              <a class="delete_link btn btn-outline-danger btn-sm" href="#"><i class="bi bi-trash3"></i> DELETE</a> 
+              <a class="delete_link btn btn-outline-danger" href="#"><i class="bi bi-trash3"></i> DELETE</a>
             </form>
-          </td>
-      </tr>
+          </div>
+        </div>
+          <a style="width: 100%" href="/petwars/pets/<%= pets[i].ID %>">
+            <img
+              class="mb-2"
+              src="images/<%= pets[i].image%>"
+              style="max-height: 150px"
+            />
+          </a>
+          <a style="width: 100%; text-align: center;" class="mb-4" href="/petwars/pets/<%= pets[i].ID %>"><%= a %>.<%= pets[i].name %></a>
+        </div>
       <% } %>
-    </tbody>
-  </table>
-
-  <p>
-    <a class="btn btn-outline-secondary btn-sm" href="/petwars"> GO BACK</a>
-  </p>
-
 </div>
 
 <script>
