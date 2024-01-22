@@ -2,8 +2,11 @@ const _pets = require("../models/pets");
 // var htmlspecialchars = require("htmlspecialchars");
 var fs = require("node:fs/promises");
 
-const {validationResult} = require("express-validator");
-const {petValidateStore, petValidateUpdate} = require("../requests/PetsRequest");
+const { validationResult } = require("express-validator");
+const {
+  petValidateStore,
+  petValidateUpdate,
+} = require("../requests/PetsRequest");
 
 // function validateText(txt, default_txt = "") {
 //   if (txt == undefined) {
@@ -75,34 +78,37 @@ module.exports = {
   showbyID: async function (req, res, next) {
     const validation = validationResult(req);
 
-    if(validation.isEmpty()) {
+    if (validation.isEmpty()) {
       let ID = req.params.id;
       try {
         const [pet, fields] = await _pets.getById(req.db, ID);
         if (pet) {
-        let d = pet.created_at;
-        const created_at = d.toString().split(" ", 4).join(" ");
-        const [totalBattles] = await _pets.totalBattles(req.db, pet.ID);
-        const [battlesWon] = await _pets.battlesWon(req.db, pet.ID);
-        const [battlesDrawn] = await _pets.battlesDrawn(req.db, pet.ID);
-        
-        res.render("Pets/showbyid", {
-          title: "Pet - " + ID,
-          pet: pet,
-          created_at: created_at,
-          totalBattles: totalBattles,
-          battlesWon: battlesWon,
-          battlesDrawn: battlesDrawn
-        });
-      } else {
-        res.status(404).send("Not Found");
-      }
+          let d = pet.created_at;
+          const created_at = d.toString().split(" ", 4).join(" ");
+          const [totalBattles] = await _pets.totalBattles(req.db, pet.ID);
+          const [battlesWon] = await _pets.battlesWon(req.db, pet.ID);
+          const [battlesDrawn] = await _pets.battlesDrawn(req.db, pet.ID);
+          const petSpecie = await _pets.getSpecie(req.db, ID);
+          // let specieName;
+          // petSpecie ? (specieName = petSpecie.name) : (specieName = "");
+          res.render("Pets/showbyid", {
+            title: "Pet - " + ID,
+            pet: pet,
+            specie: petSpecie,
+            created_at: created_at,
+            totalBattles: totalBattles,
+            battlesWon: battlesWon,
+            battlesDrawn: battlesDrawn,
+          });
+        } else {
+          res.status(404).send("Not Found");
+        }
       } catch (err) {
         console.log(err);
         res.status(500).send("Server failure");
       }
     } else {
-      res.status(404).send("Wrong Pet")
+      res.status(404).send("Wrong Pet");
     }
   },
   create: function (req, res, next) {
@@ -116,15 +122,15 @@ module.exports = {
     const [pet, valid, messages] = petValidateStore(req);
     if (valid) {
       try {
-        console.log(pet.species)
+        console.log(pet.species);
         await _pets.diableKeyCheck(req.db);
         const petID = await _pets.create(req.db, pet);
         const specieID = await _pets.createSpecies(req.db, pet.species);
         await _pets.updateNewPetSpecie(req.db, specieID, petID);
         await _pets.updateAllPetSpecies(req.db, specieID, pet.species);
-        await _pets.deleteSpiece(req.db, pet.species, specieID)
+        await _pets.deleteSpiece(req.db, pet.species, specieID);
         await _pets.enableKeyCheck(req.db);
-        console.log(pet.species)
+        console.log(pet.species);
         if (req.file) {
           const ext = {
             "image/webp": ".webp",
@@ -176,14 +182,14 @@ module.exports = {
         delete req.session.messages;
         const petSpecie = await _pets.getSpecie(req.db, ID);
         let specieName;
-        petSpecie ? specieName = petSpecie.name : specieName = '';
+        petSpecie ? (specieName = petSpecie.name) : (specieName = "");
 
         res.render("Pets/edit", {
           title: "Pet edit page",
           pet: pet,
           old: old,
           messages: messages,
-          specie: specieName
+          specie: specieName,
         });
       } else {
         res.status(404).send("Not Found");
@@ -195,13 +201,16 @@ module.exports = {
   },
   update: async function (req, res, next) {
     let ID = req.params.id;
-    let admin_ID = req.params.IDI 
+    let admin_ID = req.params.IDI;
     try {
       const [pet] = await _pets.getById(req.db, ID);
       if (pet) {
-        const [pet_validated, specie, valid, messages] = petValidateUpdate(req, pet);
+        const [pet_validated, specie, valid, messages] = petValidateUpdate(
+          req,
+          pet
+        );
 
-          if (valid) {
+        if (valid) {
           await _pets.update(req.db, ID, pet_validated);
           await _pets.updateSpecie(req.db, specie.name, ID);
 
@@ -223,7 +232,9 @@ module.exports = {
           if (req.file) {
             fs.rm(req.file.path);
           }
-          res.redirect(req.header("Referer") ?? `/panel/${admin_ID}/${ID}/edit`);
+          res.redirect(
+            req.header("Referer") ?? `/panel/${admin_ID}/${ID}/edit`
+          );
         }
       } else {
         res.status(404).send("Not Found");
@@ -255,9 +266,11 @@ module.exports = {
       const nr2 = number[1].ID;
       const [pet1, fields] = await _pets.getById(req.db, nr1);
       const [pet2] = await _pets.getById(req.db, nr2);
-      if (req.header("Referer") == "http://localhost:3000/petwars" | req.header("Referer") == "http://localhost:3000/petwars/") {
+      if (
+        (req.header("Referer") == "http://localhost:3000/petwars")
+      ) {
         // if  pet1 = false and pet2 = false pbandyti reikes
-        console.log('tikrinam123');
+        console.log("tikrinam123");
         console.log(req.session.winner);
         const [battleStats] = await _pets.battleStats(req.db, pet1.ID, pet2.ID);
         const winnerID = req.session.winner;
@@ -266,7 +279,10 @@ module.exports = {
         const [loser] = await _pets.getById(req.db, loserID);
         const oldPet1 = req.session.oldPet1;
         const oldPet2 = req.session.oldPet2;
-        if (req.session.winner == undefined) await _pets.createBattle(req.db, oldPet1.ID, oldPet2.ID, `draw`);
+        console.log(req.session)
+        if (req.session.winner == undefined){
+          await _pets.createBattle(req.db, oldPet1.ID, oldPet2.ID, `draw`);
+        }
         delete req.session.oldPet1;
         delete req.session.oldPet2;
         delete req.session.winner;
@@ -286,12 +302,19 @@ module.exports = {
           pet2: pet2,
           stat: battleStats,
           winner: winner,
-          loser: loser
+          loser: loser,
         });
       } else {
         req.session.oldPet1 = pet1;
         req.session.oldPet2 = pet2;
-        res.render("Pets/index", { title: "Petwars", pet1: pet1, pet2: pet2, oldPet1: false, oldPet2: false, winner: false});
+        res.render("Pets/index", {
+          title: "Petwars",
+          pet1: pet1,
+          pet2: pet2,
+          oldPet1: false,
+          oldPet2: false,
+          winner: false,
+        });
       }
     } catch (err) {
       console.log(err);
@@ -302,16 +325,136 @@ module.exports = {
     try {
       req.session.winner = req.body.winner;
       req.session.loser = req.body.loser;
-      await _pets.createBattle(req.db, req.body.winner, req.body.loser, req.body.winner)
-      if(req.header("/petwars")){
-        console.log("veikia")
+      await _pets.createBattle(
+        req.db,
+        req.body.winner,
+        req.body.loser,
+        req.body.winner
+      );
+      if (req.header("/petwars")) {
+        console.log("veikia");
       }
-      res.redirect('/petwars')
+      res.redirect("/petwars");
       // res.render("Pets/index", { title: "Petwars", pet1: pet1, pet2: pet2, pets: twoPets, oldPet1: false, oldPet2: false});
       // res.redirect(req.header("Referer") ?? `/petwars/pets/${ID}/edit`);
     } catch (err) {
       console.log(err);
       res.status(500).send("Server failure");
     }
-  }
+  },
+  mostWinningPets: async function (req, res, next) {
+    try {
+      const petsTotalBattles = [];
+      const pets = [];
+      const [petWins, fields] = await _pets.mostWinning(req.db);
+      for (let i in petWins) {
+        petsTotalBattles.push((await _pets.totalBattles(req.db, petWins[i].ID))[0]);
+        pets.push((await _pets.getById(req.db, petWins[i].ID))[0]);
+      }
+      res.render("Pets/mostwinning", {
+        title: "Winningest Pets",
+        totalBattles: petsTotalBattles,
+        petWins: petWins,
+        pets: pets,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server failure");
+    }
+  },
+  mostLosingPets: async function (req, res, next) {
+    try {
+      const petsTotalBattles = [];
+      const pets = [];
+      const [petLosses, fields] = await _pets.mostLosing(req.db);
+      for (let i in petLosses) {
+        petsTotalBattles.push((await _pets.totalBattles(req.db, petLosses[i].ID))[0]);
+        pets.push((await _pets.getById(req.db, petLosses[i].ID))[0]);
+      }
+      res.render("Pets/mostlosing", {
+        title: "Losingest Pets",
+        totalBattles: petsTotalBattles,
+        petLosses: petLosses,
+        pets: pets,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server failure");
+    }
+  },
+  mostTiedPets: async function (req, res, next) {
+    try {
+      const petsTotalBattles = [];
+      const pets = [];
+      const [petTied, fields] = await _pets.mostPeacefull(req.db);
+      for (let i in petTied) {
+        petsTotalBattles.push((await _pets.totalBattles(req.db, petTied[i].ID))[0]);
+        pets.push((await _pets.getById(req.db, petTied[i].ID))[0]);
+      }
+      res.render("Pets/mostTied", {
+        title: "Pets who have Tied the most",
+        totalBattles: petsTotalBattles,
+        petTied: petTied,
+        pets: pets,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server failure");
+    }
+  },
+  weekWinner: async function (req, res, next) {
+    try{
+      const winner = await _pets.winnerOfTheWeek(req.db);
+      const [pet] = await _pets.getById(req.db, winner.ID);
+      const petSpecie = await _pets.getSpecie(req.db, pet.ID);
+      const [totalBattles] = await _pets.totalBattles(req.db, pet.ID);
+      console.log(totalBattles);
+      res.render("Pets/weekwinner", {
+        title: "Winner Of The Week!",
+        pet: pet,
+        specie: petSpecie,
+        totalBattles: totalBattles,
+        petWins: winner
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server failure");
+    }
+  },
+  monthWinner: async function (req, res, next) {
+    try{
+      const winner = await _pets.winnerOfTheMonth(req.db);
+      const [pet] = await _pets.getById(req.db, winner.ID);
+      const petSpecie = await _pets.getSpecie(req.db, pet.ID);
+      const [totalBattles] = await _pets.totalBattles(req.db, pet.ID);
+      res.render("Pets/monthwinner", {
+        title: "Winner Of The Month!",
+        pet: pet,
+        specie: petSpecie,
+        totalBattles: totalBattles,
+        petWins: winner
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server failure");
+    }
+  },
+  yearWinner: async function (req, res, next) {
+    try{
+      const winner = await _pets.winnerOfTheYear(req.db);
+      const [pet] = await _pets.getById(req.db, winner.ID);
+      const petSpecie = await _pets.getSpecie(req.db, pet.ID);
+      const [totalBattles] = await _pets.totalBattles(req.db, pet.ID);
+      res.render("Pets/yearwinner", {
+        title: "Winner Of The Year!",
+        pet: pet,
+        specie: petSpecie,
+        totalBattles: totalBattles,
+        petWins: winner
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server failure");
+    }
+  },
 };

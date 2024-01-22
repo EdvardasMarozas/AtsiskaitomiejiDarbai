@@ -13,19 +13,19 @@
 
     <form action="/petwars/post" method="post" enctype="multipart/form-data">
         <div class="mb-3">
-            <label for="imageInput" class="form-label">Photo</label>
+            <label for="imageInput" class="form-label" style="color: #ff6f3c;">Photo</label>
             <input style="background: rgba(255,255,255,0.5)" type="file" class="form-control" name="image" id="imageInput" placeholder="">
           </div>
         <div class="mb-3">
-          <label for="nameInput" class="form-label">Pet name</label>
+          <label for="nameInput" class="form-label" style="color: #ff6f3c;">Pet name</label>
           <input style="background: rgba(255,255,255,0.5)" type="text" class="form-control" name="name" id="nameInput" value="<%= old ? old.name : '' %>" placeholder="" >
         </div>
         <div class="mb-3">
-          <label for="emailInput" class="form-label">Your Email</label>
+          <label for="emailInput" class="form-label" style="color: #ff6f3c;">Your Email</label>
           <input style="background: rgba(255,255,255,0.5)" type="email" class="form-control" name="email" id="emailInput" value="<%= old ? old.email : '' %>" placeholder="" >
         </div>
         <div class="mb-3">
-          <label for="speciesInput" class="form-label">species</label>
+          <label for="speciesInput" class="form-label" style="color: #ff6f3c;">Species</label>
           <input style="background: rgba(255,255,255,0.5)" type="text" class="form-control" name="species" id="speciesInput" value="<%= old ? old.species : '' %>" placeholder="" >
         </div>
         <div class="d-flex justify-content-evenly"><button type="submit" class="btn btn-outline-warning"><i class="bi bi-plus-circle"></i> ADD</button> <a class="btn btn-outline-warning" href="/petwars"> GO BACK</a></div>

@@ -1,8 +1,8 @@
 <%- include("../layout/header") %>
 <a class="btn btn-outline-warning" href="/petwars"> GO BACK</a>
 <h1 class="text-center" style="color: #ff9a3c;"><%= title %></h1>
-<div class="container" style="column-width: 200px">
-  <% for (let i = 0, a = 1; i < pets.length; i++, a++) { %>
+<div class="container" style="column-width: 190px">
+  <% for (let i = 0, a = 1; i < 11; i++, a++) { %>
   <div
     style="
       display: flex;
@@ -10,7 +10,7 @@
       break-inside: avoid;
       width: 71%;
     "
-  >
+  > <%- pets[i].ID == pets[0].ID ? `<h1 class="text-center text-danger mt-5">FLOP</h1>` : '' %>
     <a style="width: 100%" href="/petwars/pets/<%= pets[i].ID %>">
       <img
         class="my-2 rounded"
@@ -20,10 +20,11 @@
     </a>
     <a
       style="width: 100%; text-align: center; font-weight: 900"
-      class="mb-4"
+      class="mb-1"
       href="/petwars/pets/<%= pets[i].ID %>"
-      ><span style="color: #5585b5"><%= a %>.</span>
-       <span style="color: #53a8b6;"><%= pets[i].name %></a> </span>
+      ><span style="color: black"><%= a %>.</span>
+       <span style="color: #030637;"><%= pets[i].name %></a> </span>
+       <p style="color: #FF9843; font-weight: 700; font-size: larger; text-align: center;">has lost <%= petLosses[i].loseprocent %>% of <%= totalBattles[i] %> battles.</p>
   </div>
   <% } %> <%- include("../layout/footer") %>
-</div>
+<%- include("../layout/footer") %>

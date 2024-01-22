@@ -4,7 +4,7 @@
 
   <% if (messages) { %>
     <% for (let message of messages) { %>
-      <div class="alert alert-warning" role="alert">
+      <div class="alert text-center" style="background-color: #ff703c79; font-weight: 900; color: #ffc93c;" role="alert">
         <%= message %>
       </div>
     <% } %>
@@ -19,7 +19,7 @@
       <label for="passwordInput" class="form-label" style="color: #ff6f3c;">Password</label>
       <input style="background: rgba(255,255,255,0.5)" type="password" class="form-control" name="password" id="passwordInput" value="" placeholder="******" required>
     </div>
-    <div class="d-flex justify-content-center"><button type="submit" class="btn btn-outline-warning"><i class="bi bi-check-circle"></i> Log In</button></div>
+    <div class="d-flex justify-content-evenly"><button type="submit" class="btn btn-outline-warning"><i class="bi bi-check-circle"></i> Log In</button><a class="btn btn-outline-warning" href="/petwars"> GO BACK</a></div>
   </form>
 </div>
 <%- include("../layout/footer") %>

@@ -1,0 +1,28 @@
+<%- include("../layout/header", {title: title}) %>
+<a class="btn btn-outline-warning" href="/petwars"> GO BACK</a>
+<div class="container text-center">
+  <h1 style="color: #f4f27e; font-weight: 600"><%- title %></h1>
+  <h1 style="color: #750e21; font-weight: 600">
+    <%= pet.name %> <%= specie ? `(${specie.name.toUpperCase()})` : '' %>
+  </h1>
+  <a href="/petwars/pets/<%- pet.ID %>"
+    ><img
+      src="images/<%= pet.image%>"
+      class="mt-3 mb-2 circle"
+      style="max-height: 400px"
+      alt="petImage"
+  /></a>
+  <p
+    style="
+      color: #e3651d;
+      font-weight: 700;
+      font-size: larger;
+      text-align: center;
+    "
+    class="fs-2"
+  >
+    has won <%= petWins.winprocent %>% of <%= totalBattles %> battles. <br />
+    <span style="color: #bed754">in this week</span>
+  </p>
+  <%- include("../layout/footer") %>
+</div>
