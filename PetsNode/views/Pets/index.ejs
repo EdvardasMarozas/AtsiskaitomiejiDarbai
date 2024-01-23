@@ -1,26 +1,37 @@
 <%- include("../layout/mainheader") %>
 <div>
-  <ul class="d-flex justify-content-end" id="nav1" style="list-style-type:none; height: 24vh;">
-    <li style="margin-right: auto;"><img src="images/../header/petwarslogo.png" style="height: 200px" alt="petwarslogo"></li>
-  <div class="list1 d-flex flex-column text-left">
-    <li><a class="" href="/login">Admin</a></li>
-    <li><a class="" href="/petwars/pets"> Pet list</a></li>
-    <li><a class="" href="/petwars/create">Add your pet</a></li>
-    <li><a class="" href="/petwars/mostwinning">Most Winning Pets</a></li>
-    <li><a class="" href="/petwars/mostlosing">Most Losing Pets</a></li>
-    <li><a class="" href="/petwars/mostpeacefull">Most Tied Pets</a></li>
-    <li><a class="" href="/petwars/weekwinner">Winner Of The Week</a></li>
-    <li><a class="" href="/petwars/monthwinner">Winner Of The Month</a></li>
-    <li><a class="" href="/petwars/yearwinner">Winner Of The Year</a></li>
-    <!-- <li><a class="btn btn-outline-warning" href="/petwars/create"><i class="bi bi-plus-circle"></i> Add your pet</a></li> -->
-  </div>
+  <ul
+    class="d-flex justify-content-end"
+    id="nav1"
+    style="list-style-type: none; height: 24vh"
+  >
+    <li style="margin-right: auto">
+      <img
+        src="images/../header/petwarslogo.png"
+        style="height: 200px"
+        alt="petwarslogo"
+      />
+    </li>
+    <div class="list1 d-flex flex-column text-left">
+      <li><a class="" href="/login">Admin</a></li>
+      <li><a class="" href="/petwars/pets"> New Pets</a></li>
+      <li><a class="" href="/petwars/create">Add your pet</a></li>
+      <li><a class="" href="/petwars/mostwinning">Most Winning Pets</a></li>
+      <li><a class="" href="/petwars/mostlosing">Most Losing Pets</a></li>
+      <li><a class="" href="/petwars/mostpeacefull">Most Tied Pets</a></li>
+      <li><a class="" href="/petwars/weekwinner">Winner Of The Week</a></li>
+      <li><a class="" href="/petwars/monthwinner">Winner Of The Month</a></li>
+      <li><a class="" href="/petwars/yearwinner">Winner Of The Year</a></li>
+    </div>
   </ul>
 </div>
 <div class="container">
   <% if (oldPet1) { %>
-  <div class="" style="position: relative; bottom: 15em;" role="alert">
+  <div class="" style="position: relative; bottom: 15em" role="alert">
     <div class="result">
-      <h1 class="text-center" style="color: #FF6868; font-weight: 700;">Results</h1>
+      <h1 class="text-center" style="color: #ff6868; font-weight: 700">
+        Results
+      </h1>
       <div class="d-flex justify-content-center gap-5">
         <div class="pr-5">
           <form action="/petwars/" method="post">
@@ -45,60 +56,101 @@
           </form>
         </div>
       </div>
-        <p class="text-center fs-3 text-info" >
-          <%= stat %> % of people picked
-          <br />
-          <a href="/petwars/pets/<%= winner ? winner.ID : oldPet1.ID %>"><%= winner ? winner.name : oldPet1.name %></a> over
-          <a href="/petwars/pets/<%= loser ? loser.ID : oldPet2.ID %>"><%= loser ? loser.name : oldPet2.name %>.</a>
-        </p>
-        <h1 class="text-center text-danger" style="font-weight: 800;">Next PetBattle!</h1>
+      <p class="text-center fs-3 text-info">
+        <%= stat %> % of people picked
+        <br />
+        <a href="/petwars/pets/<%= winner ? winner.ID : oldPet1.ID %>"
+          ><%= winner ? winner.name : oldPet1.name %></a
+        >
+        over
+        <a href="/petwars/pets/<%= loser ? loser.ID : oldPet2.ID %>"
+          ><%= loser ? loser.name : oldPet2.name %>.</a
+        >
+      </p>
+      <h1 class="text-center text-danger" style="font-weight: 800">
+        Next PetBattle!
+      </h1>
       <% } %>
 
       <div class="d-flex justify-content-evenly gap-5 fs-4 mb-2 fw-medium">
-        <div class="text-warning text-center" style="font-weight: 900;">SOLDIER 01</div>
+        <div class="text-warning text-center" style="font-weight: 900">
+          SOLDIER 01
+        </div>
         <div></div>
         <div></div>
-        <div class="text-warning text-center" style="font-weight: 900;">SOLDIER 02</div>
+        <div class="text-warning text-center" style="font-weight: 900">
+          SOLDIER 02
+        </div>
       </div>
       <div class="d-flex justify-content-evenly gap-5 fw-medium">
         <div class="polaroid pr-5">
           <form action="/petwars/" method="post">
-            <input type="hidden" name="winner" value="<%= pet1.ID %>">
-            <input type="hidden" name="loser" value="<%= pet2.ID %>">
+            <input type="hidden" name="winner" value="<%= pet1.ID %>" />
+            <input type="hidden" name="loser" value="<%= pet2.ID %>" />
             <a class="post_link" href="/petwars"
               ><img
                 id="<%= pet1.ID %>"
                 src="images/<%= pet1.image%>"
                 style="height: 300px"
                 class="pr-5 rounded"
-            /></a><div class="conter">
-              <p><span style="font-weight: 500;" class="fs-1 text-primary"><%= pet1.name %><span></p>
+            /></a>
+            <div class="conter">
+              <p>
+                <span
+                  style="
+                    font-weight: 500;
+                    color: #000000;
+                    background-color: rgba(255, 255, 255, 0.5);
+                  "
+                  class="fs-1"
+                  ><%= pet1.name %></span
+                >
+              </p>
             </div>
           </form>
         </div>
 
         <div class="align-self-center">
-          <img src="images/../header/vs4.png" style="height: 250px; padding-bottom: 5em;" alt="VS">
+          <img
+            src="images/../header/vs4.png"
+            style="height: 250px; padding-bottom: 5em"
+            alt="VS"
+          />
         </div>
 
         <div class="polaroid pl-5">
           <form action="/petwars/" method="post">
-            <input type="hidden" name="winner" value="<%= pet2.ID %>">
-            <input type="hidden" name="loser" value="<%= pet1.ID %>">
+            <input type="hidden" name="winner" value="<%= pet2.ID %>" />
+            <input type="hidden" name="loser" value="<%= pet1.ID %>" />
             <a class="post_link" href="/petwars"
               ><img
                 id="<%= pet2.ID %>"
                 src="images/<%= pet2.image%>"
-                style="height: 300px;"
+                style="height: 300px"
                 class="mr-5 rounded"
-            /></a><div class="conter">
-              <p><span style="font-weight: 500;" class="fs-1 text-primary"><%= pet2.name %></span></p>
+            /></a>
+            <div class="conter">
+              <p>
+                <span
+                  style="
+                    font-weight: 500;
+                    color: #000000;
+                    background-color: rgba(255, 255, 255, 0.5);
+                  "
+                  class="fs-1"
+                  ><%= pet2.name %></span
+                >
+              </p>
             </div>
           </form>
         </div>
       </div>
 
-      <div class="text-center mt-3"><h2 style="font-weight: 900; color: #FFF8E3;">WHO WINS?! YOU DECIDE!!!</h2></div>
+      <div class="text-center mt-3">
+        <h2 style="font-weight: 900; color: #fff8e3">
+          WHO WINS?! YOU DECIDE!!!
+        </h2>
+      </div>
       <div class="text-center text-light fs-5">
         Can't decide? Just <a href="/petwars">refresh</a> the page for a draw.
       </div>
@@ -108,7 +160,7 @@
 
 <script>
   const post_links = document.getElementsByClassName("post_link");
-  if (post_links.length){
+  if (post_links.length) {
     for (let i = 0; i < post_links.length; i++) {
       post_links[i].addEventListener("click", (evt) => {
         evt.preventDefault();

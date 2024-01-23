@@ -1,19 +1,32 @@
 <%- include("../layout/header", {title: title}) %>
 
 <div class="container">
+  <h1 class="mb-5">
+    <%= pet.name %> <%= specie ? `(${specie.name.toUpperCase()})` : '' %>
+  </h1>
+  <h4 class="mb-3">Added to the website on <%= created_at %></h4>
 
-<h1 class="mb-5"><%= pet.name %> <%= specie ? `(${specie.name.toUpperCase()})` : '' %></h1>
-<h4 class="mb-3">Added to the website on <%= created_at %></h4>
-
-<div class="card" style="width: 15rem;">
-    <img src="images/<%= pet.image%>" class="card-img-top" alt="...">
+  <div class="card" style="width: 15rem">
+    <img src="images/<%= pet.image%>" class="card-img-top" alt="..." />
     <div class="card-body">
-      <h5 class="card-title">Battle stats: (out of <%= totalBattles %> battles)</h5>
+      <h5 class="card-title">
+        Battle stats: (out of <%= totalBattles %> battles)
+      </h5>
     </div>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item">Won: <%= battlesWon%> (<%= totalBattles == 0 ? 0 : (battlesWon*100/totalBattles).toFixed(0) %>%)</li>
-      <li class="list-group-item">Lost: <%= (totalBattles - battlesWon - battlesDrawn) %> (<%= totalBattles == 0 ? 0 : ((totalBattles - battlesWon - battlesDrawn)*100/totalBattles).toFixed(0) %>%)</li>
-      <li class="list-group-item">Drawn: <%= battlesDrawn %> (<%= totalBattles == 0 ? 0 : (battlesDrawn*100/totalBattles).toFixed(0) %>%)</li>
+      <li class="list-group-item">
+        Won: <%= battlesWon%> (<%= totalBattles == 0 ? 0 :
+        (battlesWon*100/totalBattles).toFixed(0) %>%)
+      </li>
+      <li class="list-group-item">
+        Lost: <%= (totalBattles - battlesWon - battlesDrawn) %> (<%=
+        totalBattles == 0 ? 0 : ((totalBattles - battlesWon -
+        battlesDrawn)*100/totalBattles).toFixed(0) %>%)
+      </li>
+      <li class="list-group-item">
+        Drawn: <%= battlesDrawn %> (<%= totalBattles == 0 ? 0 :
+        (battlesDrawn*100/totalBattles).toFixed(0) %>%)
+      </li>
     </ul>
     <div class="card-body text-center">
       <a href="/petwars" class="card-link">Start a new battle</a>

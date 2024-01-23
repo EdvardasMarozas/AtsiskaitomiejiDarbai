@@ -1,29 +1,60 @@
 <%- include("../layout/header", {title: title}) %>
-<div class="container mx-auto" style="width: 23%;">
-  <h1 class="text-warning text-center"><%= title %></h1>
+<div class="container mx-auto" style="width: 23%">
+  <h1 class="text-warning text-center mb-5"><%= title %></h1>
 
-  <% if (messages) { %>
-    <% for (let message of messages) { %>
-      <div class="alert text-center" style="background-color: #ff703c79; font-weight: 900; color: #ffc93c;" role="alert">
-        <%= message %>
-      </div>
-    <% } %>
-  <% } %>
+  <%- include("../messages") %>
 
   <form action="/register" method="post">
     <div class="mb-3">
-      <label for="emailInput" class="form-label" style="color: #ff6f3c;">Email</label>
-      <input style="background: rgba(255,255,255,0.5)" type="email" class="form-control" name="email" id="emailInput" value="<%= old ? old.email : '' %>" placeholder="jonaitis@gmail.com" required>
+      <label for="emailInput" class="form-label fs-5" style="color: #ff6f3c"
+        >Email:</label
+      >
+      <input
+        style="background: rgba(255, 255, 255, 0.5)"
+        type="email"
+        class="form-control"
+        name="email"
+        id="emailInput"
+        value="<%= old ? old.email : '' %>"
+        placeholder="jonaitis@gmail.com"
+        required
+      />
     </div>
     <div class="mb-3">
-      <label for="passwordInput" class="form-label" style="color: #ff6f3c;">Password</label>
-      <input style="background: rgba(255,255,255,0.5)" type="password" class="form-control" name="password" id="passwordInput" value="" placeholder="******" required>
+      <label for="passwordInput" class="form-label fs-5" style="color: #ff6f3c"
+        >Password:</label
+      >
+      <input
+        style="background: rgba(255, 255, 255, 0.5)"
+        type="password"
+        class="form-control"
+        name="password"
+        id="passwordInput"
+        value=""
+        placeholder="******"
+        required
+      />
     </div>
     <div class="mb-3">
-      <label for="password2Input" class="form-label" style="color: #ff6f3c;">Repeat password</label>
-      <input style="background: rgba(255,255,255,0.5)" type="password" class="form-control" name="password_confirm" id="password2Input" value="" placeholder="******" required>
+      <label for="password2Input" class="form-label fs-5" style="color: #ff6f3c"
+        >Repeat password:</label
+      >
+      <input
+        style="background: rgba(255, 255, 255, 0.5)"
+        type="password"
+        class="form-control"
+        name="password_confirm"
+        id="password2Input"
+        value=""
+        placeholder="******"
+        required
+      />
     </div>
-    <div class="d-flex justify-content-center"><button type="submit" class="btn btn-outline-warning"><i class="bi bi-check-circle"></i> Register</button></div>
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-outline-warning fs-5">
+        <i class="bi bi-check-circle"></i> Register
+      </button>
+    </div>
   </form>
 </div>
 <%- include("../layout/footer") %>

@@ -1,14 +1,14 @@
 <%- include("../layout/header") %>
 <a class="btn btn-outline-warning" href="/petwars"> GO BACK</a>
-<h1 class="text-center" style="color: #ff9a3c;"><%= title %></h1>
-<div class="container" style="column-width: 200px">
-  <% for (let i = 0, a = 1; i < pets.length; i++, a++) { %>
+<h1 class="text-center" style="color: #ff9a3c"><%= title %></h1>
+<div class="container" style="column-width: 170px">
+  <% for (let i = 0, a = 1; i < 21; i++, a++) { %>
   <div
     style="
       display: flex;
       flex-direction: column;
       break-inside: avoid;
-      width: 71%;
+      width: 100%;
     "
   >
     <a style="width: 100%" href="/petwars/pets/<%= pets[i].ID %>">
@@ -19,11 +19,11 @@
       />
     </a>
     <a
-      style="width: 100%; text-align: center; font-weight: 900"
+      style="width: 100%; font-weight: 900"
       class="mb-4"
       href="/petwars/pets/<%= pets[i].ID %>"
-      ><span style="color: #5585b5"><%= a %>.</span>
-       <span style="color: #53a8b6;"><%= pets[i].name %></a> </span>
+      ><%= a %>. <%= pets[i].name %></a
+    >
   </div>
   <% } %> <%- include("../layout/footer") %>
 </div>

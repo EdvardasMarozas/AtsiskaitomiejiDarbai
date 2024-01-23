@@ -1,35 +1,73 @@
 <%- include("../layout/header", {title: "add a pet"}) %>
 
-<div class="container mx-auto" style="width: 23%;">
-    <h1 class="text-center" style="color: #ff9a3c;">Add a Pet</h1>
+<div class="container mx-auto" style="width: 23%">
+  <h1 class="text-center" style="color: #ff9a3c">Add a Pet</h1>
 
-    <% if (messages) { %>
-      <% for (let message of messages) { %>
-        <div class="alert text-center" style="background-color: #ff703c79; font-weight: 900; color: #ffc93c;" role="alert">
-          <%= message %>
-        </div>
-      <% } %>
-    <% } %>
+  <%- include("../messages") %>
 
-    <form action="/petwars/post" method="post" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="imageInput" class="form-label" style="color: #ff6f3c;">Photo</label>
-            <input style="background: rgba(255,255,255,0.5)" type="file" class="form-control" name="image" id="imageInput" placeholder="">
-          </div>
-        <div class="mb-3">
-          <label for="nameInput" class="form-label" style="color: #ff6f3c;">Pet name</label>
-          <input style="background: rgba(255,255,255,0.5)" type="text" class="form-control" name="name" id="nameInput" value="<%= old ? old.name : '' %>" placeholder="" >
-        </div>
-        <div class="mb-3">
-          <label for="emailInput" class="form-label" style="color: #ff6f3c;">Your Email</label>
-          <input style="background: rgba(255,255,255,0.5)" type="email" class="form-control" name="email" id="emailInput" value="<%= old ? old.email : '' %>" placeholder="" >
-        </div>
-        <div class="mb-3">
-          <label for="speciesInput" class="form-label" style="color: #ff6f3c;">Species</label>
-          <input style="background: rgba(255,255,255,0.5)" type="text" class="form-control" name="species" id="speciesInput" value="<%= old ? old.species : '' %>" placeholder="" >
-        </div>
-        <div class="d-flex justify-content-evenly"><button type="submit" class="btn btn-outline-warning"><i class="bi bi-plus-circle"></i> ADD</button> <a class="btn btn-outline-warning" href="/petwars"> GO BACK</a></div>
-      </form>
+  <form action="/petwars/create" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="imageInput" class="form-label fs-5" style="color: #ff6f3c;"
+        >Photo:</label
+      >
+      <input
+        style="background: rgba(255, 255, 255, 0.5)"
+        type="file"
+        class="form-control"
+        name="image"
+        id="imageInput"
+        placeholder=""
+      />
+    </div>
+    <div class="mb-3">
+      <label for="nameInput" class="form-label fs-5" style="color: #ff6f3c"
+        >Pet name:</label
+      >
+      <input
+        style="background: rgba(255, 255, 255, 0.5)"
+        type="text"
+        class="form-control"
+        name="name"
+        id="nameInput"
+        value="<%= old ? old.name : '' %>"
+        placeholder=""
+      />
+    </div>
+    <div class="mb-3">
+      <label for="emailInput" class="form-label fs-5" style="color: #ff6f3c"
+        >Your Email:</label
+      >
+      <input
+        style="background: rgba(255, 255, 255, 0.5)"
+        type="email"
+        class="form-control"
+        name="email"
+        id="emailInput"
+        value="<%= old ? old.email : '' %>"
+        placeholder=""
+      />
+    </div>
+    <div class="mb-3">
+      <label for="speciesInput" class="form-label fs-5" style="color: #ff6f3c"
+        >Species:</label
+      >
+      <input
+        style="background: rgba(255, 255, 255, 0.5)"
+        type="text"
+        class="form-control"
+        name="species"
+        id="speciesInput"
+        value="<%= old ? old.species : '' %>"
+        placeholder=""
+      />
+    </div>
+    <div class="d-flex justify-content-evenly">
+      <button type="submit" class="btn btn-outline-warning fs-5">
+        <i class="bi bi-plus-circle"></i> ADD
+      </button>
+      <a class="btn btn-outline-warning fs-5" href="/petwars"> GO BACK</a>
+    </div>
+  </form>
 </div>
 
 <%- include("../layout/footer") %>

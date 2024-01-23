@@ -51,8 +51,8 @@ module.exports = {
       .isEmail()
       .withMessage("Invalid email address!"),
     body("password")
-    .trim()
-    .notEmpty()
-    .withMessage("Password is not specified!")
+      .trim()
+      .notEmpty()
+      .withMessage("Password is not specified!"),
   ],
 };

@@ -1,15 +1,14 @@
-const Admin = require("../models/admin");
+const _admin = require("../models/admin");
 const _pets = require("../models/pets");
 var fs = require("node:fs/promises");
 
 const { validationResult } = require("express-validator");
 const { adminValidate } = require("../requests/AdminRequest");
-const {petValidateStore, petValidateUpdate} = require("../requests/PetsRequest");
+const { petValidateUpdate } = require("../requests/PetsRequest");
 
 var bcrypt = require("bcrypt");
 
 module.exports = {
-  // Vartotojo prisijungimo forma
   login: async function (req, res, next) {
     const old = req.session.old;
     const messages = req.session.messages;
@@ -22,22 +21,14 @@ module.exports = {
       messages: messages,
     });
   },
-
-  // Vartotojo registracijos formos apdorojimas, registracija
   loginPost: async function (req, res, next) {
     const [admin, valid, messages] = adminValidate(req);
 
     if (valid) {
       try {
-        // patikrinti ar el. paštas egzistuoja
-        let [db_admin] = await Admin.getByEmail(req.db, admin.email);
+        let [db_admin] = await _admin.getByEmail(req.db, admin.email);
         if (db_admin) {
-          // jei el. paštas egzistuoja
-          // tikriname slaptažodis
           if (await bcrypt.compare(admin.password, db_admin.password)) {
-            // slaptažodis teisingas
-
-            // prijungiame vartotoją per sesijas
             req.session.admin_email = db_admin.email;
             req.session.admin_id = db_admin.id;
 
@@ -66,8 +57,6 @@ module.exports = {
       res.redirect("/login");
     }
   },
-
-  // Vartotojo registracijos forma
   register: async function (req, res, next) {
     const old = req.session.old;
     const messages = req.session.messages;
@@ -75,38 +64,30 @@ module.exports = {
     delete req.session.messages;
 
     res.render("Admin/register", {
-      title: "Admin registration",
+      title: "Admin Registration",
       old: old,
       messages: messages,
     });
   },
-
-  // Vartotojo registracijos formos apdorojimas, registracija
   registerPost: async function (req, res, next) {
     const [admin, valid, messages] = adminValidate(req);
     if (valid) {
-      // registruojame
       try {
-        // patikrinti ar el. paštas neegzistuoja
-        let [db_admin] = await Admin.getByEmail(req.db, admin.email);
+        let [db_admin] = await _admin.getByEmail(req.db, admin.email);
         if (db_admin) {
-          // jei el. paštas egzistuoja
           messages.push("This email is currently in use");
 
           req.session.old = admin;
           req.session.messages = messages;
           res.redirect("/register");
         } else {
-          // generuojamas slaptažodis
           let password_hash = await bcrypt.hash(admin.password, 10);
 
-          // dedam į DB
-          let admin_id = await Admin.create(req.db, {
+          let admin_id = await _admin.createAdmin(req.db, {
             email: admin.email,
             password: password_hash,
           });
           if (admin_id) {
-            // sėkminga registracija
             req.session.admin_id = admin_id;
             req.session.admin_email = admin.email;
 
@@ -129,28 +110,20 @@ module.exports = {
       res.redirect("/register");
     }
   },
-
-  // vartotojo atsijungimas
   logout: async function (req, res, next) {
     delete req.session.admin_id;
     delete req.session.admin_email;
     res.redirect("/login");
   },
-
-  // vartotojo paskyros puslapis
   panel: async function (req, res, next) {
-    // tikriname ar tesingas vartotojo id
     const validation = validationResult(req);
     if (validation.isEmpty()) {
       let id = req.params.IDI;
 
-      // tikriname ar vartotojas yra prisijungęs
       if (req.session.admin_id) {
-        // autorizavimas
-        // tikriname vartotojo id ir prisijungusio vartotojo id
         if (req.session.admin_id == id) {
           try {
-            const [admin, fields] = await Admin.getById(req.db, id);
+            const [admin, fields] = await _admin.getById(req.db, id);
             const [pets] = await _pets.getAll(req.db);
 
             if (admin) {
@@ -167,11 +140,9 @@ module.exports = {
             res.status(500).send("Server error");
           }
         } else {
-          // prisijungęs ne tas vartotojas
           res.status(403).send("Access denied");
         }
       } else {
-        // vartotojas nėra prisijungęs
         res.status(403).send("Log in first! <a href='/login'> login</a>");
       }
     } else {
@@ -186,7 +157,7 @@ module.exports = {
       if (req.session.admin_id) {
         if (req.session.admin_id == adminID) {
           try {
-            const [admin, fields] = await Admin.getById(req.db, adminID);
+            const [admin, fields] = await _admin.getById(req.db, adminID);
             const [pet] = await _pets.getById(req.db, ID);
 
             if (pet) {
@@ -214,11 +185,9 @@ module.exports = {
             res.status(500).send("Server error");
           }
         } else {
-          // prisijungęs ne tas vartotojas
           res.status(403).send("Access denied");
         }
       } else {
-        // vartotojas nėra prisijungęs
         res.status(403).send("Log in first! <a href='/login'> login</a>");
       }
     } else {
@@ -231,21 +200,21 @@ module.exports = {
     try {
       const [pet] = await _pets.getById(req.db, ID);
       if (pet) {
-        const [pet_validated, valid, messages] = petValidateUpdate(
-          req,
-          pet
-        );
-          console.log(pet_validated)
+        const [pet_validated, valid, messages] = petValidateUpdate(req, pet);
+        console.log(pet_validated);
         if (valid) {
-          await _pets.update(req.db, ID, pet_validated);
+          await _admin.updatePet(req.db, ID, pet_validated);
           await _pets.updateSpecie(req.db, pet_validated.species, ID);
           const species = await _pets.getSpecie(req.db, ID);
-          if(species === undefined){
+          if (species === undefined) {
             await _pets.diableKeyCheck(req.db);
-            const specieID = await _pets.createSpecies(req.db, pet_validated.species);
+            const specieID = await _pets.createSpecies(
+              req.db,
+              pet_validated.species
+            );
             await _pets.updateNewPetSpecie(req.db, specieID, ID);
             await _pets.updateAllPetSpecies(req.db, specieID, pet.species);
-            await _pets.deleteSpiece(req.db, pet_validated.species, specieID)
+            await _pets.deleteSpiece(req.db, pet_validated.species, specieID);
             await _pets.enableKeyCheck(req.db);
           }
           if (req.file) {
@@ -284,7 +253,7 @@ module.exports = {
     try {
       const [pet] = await _pets.getById(req.db, ID);
       if (pet) {
-        const [result] = await _pets.delete(req.db, ID);
+        await _admin.deletePet(req.db, ID);
         res.redirect(`/panel/${admin_ID}/`);
       } else {
         res.status(404).send("Not Found");

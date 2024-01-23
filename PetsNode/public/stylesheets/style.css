@@ -7,5 +7,9 @@ body {
   }
   
   a {
-    color: #00B7FF;
+    color: rgb(56, 214, 48);
+    text-decoration: none;
+  }
+  a:hover{
+    color: rgb(187, 19, 19);
   }
