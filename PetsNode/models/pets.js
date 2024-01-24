@@ -61,6 +61,11 @@ module.exports = {
     const q = `DELETE FROM species WHERE name = ? AND ID <> ?;`;
     return await db.query(q, [name, specieID]);
   },
+  getSpecieAmount: async function (db, name) {
+    const q = `SELECT COUNT(name) as cnt FROM species WHERE name = ?;`;
+    const [results, fields] = await db.query(q, [name]);
+    return results[0].cnt;
+  },
   diableKeyCheck: async function (db) {
     const q = `SET FOREIGN_KEY_CHECKS=0;`;
     return await db.query(q);

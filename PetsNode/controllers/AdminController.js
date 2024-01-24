@@ -201,12 +201,12 @@ module.exports = {
       const [pet] = await _pets.getById(req.db, ID);
       if (pet) {
         const [pet_validated, valid, messages] = petValidateUpdate(req, pet);
-        console.log(pet_validated);
         if (valid) {
           await _admin.updatePet(req.db, ID, pet_validated);
           await _pets.updateSpecie(req.db, pet_validated.species, ID);
           const species = await _pets.getSpecie(req.db, ID);
-          if (species === undefined) {
+          const amount = await _pets.getSpecieAmount(req.db, species.name);
+          if ((species === undefined) | (amount > 1)) {
             await _pets.diableKeyCheck(req.db);
             const specieID = await _pets.createSpecies(
               req.db,

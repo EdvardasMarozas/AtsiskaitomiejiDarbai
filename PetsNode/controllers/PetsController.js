@@ -10,7 +10,10 @@ module.exports = {
     try {
       const [pets, fields] = await _pets.getAllNewPets(req.db);
 
-      res.render("Pets/allNewPets", { title: "Our Newest Soldiers!", pets: pets });
+      res.render("Pets/allNewPets", {
+        title: "Our Newest Soldiers!",
+        pets: pets,
+      });
     } catch (err) {
       console.log(err);
       res.status(500).send("Server failure");
@@ -38,7 +41,7 @@ module.exports = {
             created_at: created_at,
             totalBattles: totalBattles,
             battlesWon: battlesWon,
-            battlesDrawn: battlesDrawn
+            battlesDrawn: battlesDrawn,
           });
         } else {
           res.status(404).send("Not Found");
@@ -100,35 +103,25 @@ module.exports = {
     }
   },
   index: async function (req, res, next) {
-    console.log("Pirmas");
     try {
-      console.log("Antras");
       const [number] = await _battles.getRandomID(req.db);
       const nr1 = number[0].ID;
       const nr2 = number[1].ID;
       const [pet1, fields] = await _pets.getById(req.db, nr1);
       const [pet2] = await _pets.getById(req.db, nr2);
-      console.log("Trecias");
-      if (
-        // (req.header("Referer") == "http://localhost:3000/petwars")
-        pet1
-      ) {
-        // reikes pabandyti užkomenuoti šita ifa
-        // if  pet1 = false and pet2 = false pbandyti reikes
-        console.log("Ketvirtas");
-        console.log("tikrinam123");
-        console.log(req.session.winner);
-        const [battleStats] = await _battles.battleStats(req.db, pet1.ID, pet2.ID);
+      if (req.header("Referer") == "http://localhost:3000/petwars") {
+        const [battleStats] = await _battles.battleStats(
+          req.db,
+          pet1.ID,
+          pet2.ID
+        );
         const winnerID = req.session.winner;
         const loserID = req.session.loser;
         const [winner, fields] = await _pets.getById(req.db, winnerID);
         const [loser] = await _pets.getById(req.db, loserID);
         const oldPet1 = req.session.oldPet1;
         const oldPet2 = req.session.oldPet2;
-        console.log(req.session);
         if (req.session.winner == undefined) {
-          // padaryti salyga kad butu gera if statemente
-          // await _pets.createBattle(req.db, oldPet1.ID, oldPet2.ID, `draw`);
           await _battles.createBattle(req.db, pet1.ID, pet2.ID, `draw`);
         }
         delete req.session.oldPet1;
@@ -137,11 +130,6 @@ module.exports = {
         delete req.session.loser;
         req.session.oldPet1 = pet1;
         req.session.oldPet2 = pet2;
-        // console.log(oldPet1.ID)
-        // console.log(oldPet2.ID)
-        // console.log("tarpas")
-        // console.log(winner)
-        // console.log(loser)
         res.render("Pets/index", {
           title: "Petwars",
           oldPet1: oldPet1,
@@ -183,8 +171,6 @@ module.exports = {
         console.log("veikia");
       }
       res.redirect("/petwars");
-      // res.render("Pets/index", { title: "Petwars", pet1: pet1, pet2: pet2, pets: twoPets, oldPet1: false, oldPet2: false});
-      // res.redirect(req.header("Referer") ?? `/petwars/pets/${ID}/edit`);
     } catch (err) {
       console.log(err);
       res.status(500).send("Server failure");
