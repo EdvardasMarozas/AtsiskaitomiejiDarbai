@@ -49,7 +49,7 @@ class StraipsnisRubrika extends Straipsnis {
       trAntraste = this.antraste;
     }
     let isvedimas = `<h1>${this.rubrikosPavadinimas}</h1> <br>
-        <img src= "${this.paveiksliukas}"; style="width:100px"> <br>
+        <img src= "${this.paveiksliukas}"; style="max-height:150px; width:150px"> <br>
         <h4 style="width:50%">${trAntraste} <a href ="${this.nuoroda}">Skaityti plačiau</a></h4>`;
     return isvedimas;
   }

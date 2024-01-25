@@ -51,10 +51,10 @@ const prekes = [
   },
 ];
 
-// router.use(express.static("public2"));
+router.use(express.static("public2"));
 
 router.get("/", (req, res) => {
-  res.render("kitas.html");
+  res.render("index");
 });
 
 router.get("/:id", (req, res) => {
