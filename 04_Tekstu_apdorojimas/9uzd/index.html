@@ -16,7 +16,7 @@
     <script>
       const url = "https://moodle.ktmc.lt/mod/assign/view.php?id=25"; // Turime URL adresą
       let tekstas = url.matchAll(
-        /(.*):\/\/(\w+\.)?(\w+\.\w+)(\/.*\/)?(\w+\.?\w+)?\??(.*)?/gi
+        /(.*):\/\/((\w+)\.)?(\w+\.\w+)(\/.*\/)?(\w+\.?\w+)?\??(.*)?/gi
       );
       // URl adrese surandame visa informaciją apie patį adresą ir priskiriam grupes
       // kad galėtumėme atskirti duomenis
@@ -27,19 +27,20 @@
         // Taip yra prirašom if sąlyga, kad nepateiktu tam tikrų duomenų jei jų tesiog nėra
         result += "Url adresas: " + element[0] + "<br>";
         result += "Protokolas: " + element[1] + "<br>";
-        result += "Domenas: " + element[3] + "<br>";
-        if (element[2]) {
-          result += "Subdomenas: " + element[2] + "<br>";
-        }
-        if (element[4]) {
-          result += "Katalogas: " + element[4] + "<br>";
+        result += "Domenas: " + element[4] + "<br>";
+        if (element[3]) {
+          result += "Subdomenas: " + element[3] + "<br>";
         }
         if (element[5]) {
-          result += "Vykdomasis failas: " + element[5] + "<br>";
+          result += "Katalogas: " + element[5] + "<br>";
         }
         if (element[6]) {
-          result += "Parametrai: " + element[6] + "<br>";
+          result += "Vykdomasis failas: " + element[6] + "<br>";
         }
+        if (element[7]) {
+          result += "Parametrai: " + element[7] + "<br>";
+        }
+        console.log(element)
       }
       document.getElementById("demo").innerHTML = result; // Išvedam gauta reusltatą
       // Man, deja, nepaėjo padaryti taip kad nebutų taško po subdomeno
