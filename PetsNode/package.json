@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "devStart": "nodemon ./bin/www",
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "vercel-build": "echo Hello World"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
