@@ -65,7 +65,6 @@ module.exports = {
     const [pet, valid, messages] = petValidateStore(req);
     if (valid) {
       try {
-        console.log(pet.species);
         await _pets.diableKeyCheck(req.db);
         const petID = await _pets.create(req.db, pet);
         const specieID = await _pets.createSpecies(req.db, pet.species);
@@ -73,7 +72,6 @@ module.exports = {
         await _pets.updateAllPetSpecies(req.db, specieID, pet.species);
         await _pets.deleteSpiece(req.db, pet.species, specieID);
         await _pets.enableKeyCheck(req.db);
-        console.log(pet.species);
         if (req.file) {
           const ext = {
             "image/webp": ".webp",

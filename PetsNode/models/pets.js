@@ -81,4 +81,9 @@ module.exports = {
     const [results, fields] = await db.query(q, [petID]);
     return results[0];
   },
+  getPhoto: async function (db, petID) {
+    const q = `SELECT image FROM pets WHERE ID = ?;`;
+    const [results, fields] = await db.query(q, [petID]);
+    return results[0].image;
+  },
 };

@@ -29,8 +29,8 @@
     <p id="demo"></p>
 
     <script>
-      let metai = 2023; // Apsibrėžiame pagrindinius kintamuosius - metai, menuo
-      let menuo = 10; 
+      let metai = new Date().getFullYear(); // Apsibrėžiame pagrindinius kintamuosius - metai, menuo
+      let menuo = new Date().getMonth(); 
       menuo -= 1; // Atimamme 1 iš menuo, kadangi getMonth() metodas yra nuo 0 - 11
       //ir kai atimsime 1, mėnesiai bus nuo 1 - 12, tokiu būdų bus paprasčiau skaityti ir rašyti kodą.
       let date = new Date(metai, menuo); // Nusistatome datos kintamaji, kuriame bus, pradiniai kintamieji(metai ir menuo)

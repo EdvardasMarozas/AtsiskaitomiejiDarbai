@@ -12,9 +12,9 @@ const prekesRouter = require("./routes/prekes");
 
 app.use("/prekes", prekesRouter);
 
-// function logger(req, res, next) {
-//   console.log(req.originalUrl);
-//   next();
-// }
+function logger(req, res, next) {
+  console.log(req.originalUrl);
+  next();
+}
 
 app.listen(8080);

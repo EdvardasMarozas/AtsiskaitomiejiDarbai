@@ -255,7 +255,14 @@ module.exports = {
     let admin_ID = req.params.IDI;
     try {
       const [pet] = await _pets.getById(req.db, ID);
+      const foto = await _pets.getPhoto(req.db, ID);
       if (pet) {
+        fs.unlink('public/images/' + foto, err => {
+          if (err) console.log(err);
+          else {
+              console.log("\nDeleted file:" + foto);
+          }
+      });
         await _admin.deletePet(req.db, ID);
         res.redirect(`/panel/${admin_ID}/`);
       } else {
